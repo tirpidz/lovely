@@ -1,0 +1,9 @@
+[submodule "external/catch2"]
+	path = external/catch2/catch2
+	url = git@github.com:catchorg/Catch2.git
+[submodule "external/imgui"]
+	path = external/imgui/imgui
+	url = git@github.com:ocornut/imgui.git
+[submodule "external/curl"]
+	path = external/curl/curl
+	url = git@github.com:curl/curl.git

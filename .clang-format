@@ -1,0 +1,13 @@
+BasedOnStyle: Google
+Standard: Cpp11
+IndentWidth: 4
+ColumnLimit: 120
+AccessModifierOffset: -4
+SortIncludes: true
+SortUsingDeclarations: true
+BreakConstructorInitializers : BeforeComma
+BreakConstructorInitializersBeforeComma: true
+KeepEmptyLinesAtTheStartOfBlocks: false
+AllowShortCaseLabelsOnASingleLine: false
+DerivePointerAlignment: false
+PointerAlignment: Left
