@@ -11,6 +11,8 @@ set(SOURCE_FILES
 add_library(lovely_window ${SOURCE_FILES} ${HEADER_FILES})
 target_include_directories(lovely_window PUBLIC .)
 target_compile_features(lovely_window PUBLIC cxx_std_17)
+target_link_libraries(lovely_window PRIVATE lovely_api)
+target_link_libraries(lovely_window PRIVATE lovely_fetch)
 
 include_directories(${PROJECT_SOURCE_DIR}/external/catch2/catch2/single_include/catch2)
 
