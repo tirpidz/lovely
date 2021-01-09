@@ -3,7 +3,7 @@
 namespace lovely {
 namespace model {
 
-model::model() : _number(41) {}
+model::model() : _number(42) {}
 
 }  // namespace model
 }  // namespace lovely

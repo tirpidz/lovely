@@ -1,5 +1,6 @@
 #include <lovely/controller/controller.h>
 #include <lovely/model/model.h>
+#include <lovely/version.h>
 #include <lovely/view/view.h>
 
 #include <iostream>

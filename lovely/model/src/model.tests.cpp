@@ -6,5 +6,5 @@ using namespace lovely;
 
 TEST_CASE("model number", "[model]") {
     model::model model;
-    REQUIRE(model.number() == 41);
+    REQUIRE(model.number() == 42);
 }

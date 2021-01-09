@@ -1,33 +1,30 @@
-include_directories(${PROJECT_SOURCE_DIR})
-include_directories(${CATCH2_INCLUDE_DIRECTORY})
-
 set(HEADER_FILES
-    view.h
+    include/lovely/view/view.h
 )
 
 set(SOURCE_FILES
-    view.cpp
+    src/view.cpp
 )
 
 set(TARGET_VIEW_NAME lovely_view)
-set(LIBRARY_VIEW_NAME ${TARGET_VIEW_NAME} PARENT_SCOPE)
 
 add_library(${TARGET_VIEW_NAME} ${SOURCE_FILES} ${HEADER_FILES})
-target_include_directories(${TARGET_VIEW_NAME} PUBLIC .)
+target_include_directories(${TARGET_VIEW_NAME} PUBLIC include)
 target_compile_features(${TARGET_VIEW_NAME} PUBLIC cxx_std_17)
-target_link_libraries(${TARGET_VIEW_NAME} PRIVATE ${LIBRARY_CONTROLLER_NAME})
-target_link_libraries(${TARGET_VIEW_NAME} PRIVATE ${LIBRARY_MODEL_NAME})
+target_link_libraries(${TARGET_VIEW_NAME} PRIVATE lovely_controller)
+target_link_libraries(${TARGET_VIEW_NAME} PRIVATE lovely_model)
 
 set(VIEW_UNIT_TESTS view-unit-tests)
 
 set(SOURCES_VIEW_UNIT_TESTS
-    view.main.tests.cpp
-    view.tests.cpp
+    src/view.main.tests.cpp
+    src/view.tests.cpp
 )
 
 add_executable(${VIEW_UNIT_TESTS} ${SOURCES_VIEW_UNIT_TESTS})
 target_compile_features(${VIEW_UNIT_TESTS} PRIVATE cxx_std_17)
 target_link_libraries(${VIEW_UNIT_TESTS} PRIVATE ${TARGET_VIEW_NAME})
+target_include_directories(${VIEW_UNIT_TESTS} PRIVATE ${CATCH2_INCLUDE_DIRECTORY})
 
 set(RUN_TEST_AFTER_BUILD true)
 
