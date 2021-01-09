@@ -1,6 +1,7 @@
 
 
 include_directories(${PROJECT_SOURCE_DIR})
+include_directories(${CATCH2_INCLUDE_DIRECTORY})
 
 set(HEADER_FILES
     model.h
@@ -23,8 +24,6 @@ set(SOURCES_MODEL_UNIT_TESTS
     model.main.tests.cpp
     model.tests.cpp
 )
-
-include_directories(${CATCH2_INCLUDE_DIRECTORY})
 
 add_executable(${MODEL_UNIT_TESTS} ${SOURCES_MODEL_UNIT_TESTS})
 target_compile_features(${MODEL_UNIT_TESTS} PRIVATE cxx_std_17)

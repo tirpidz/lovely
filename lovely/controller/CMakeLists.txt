@@ -1,4 +1,5 @@
 include_directories(${PROJECT_SOURCE_DIR})
+include_directories(${CATCH2_INCLUDE_DIRECTORY})
 
 set(HEADER_FILES
     controller.h
@@ -22,8 +23,6 @@ set(SOURCES_CONTROLLER_UNIT_TESTS
     controller.main.tests.cpp
     controller.tests.cpp
 )
-
-include_directories(${CATCH2_INCLUDE_DIRECTORY})
 
 add_executable(${CONTROLLER_UNIT_TESTS} ${SOURCES_CONTROLLER_UNIT_TESTS})
 target_compile_features(${CONTROLLER_UNIT_TESTS} PRIVATE cxx_std_17)

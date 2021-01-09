@@ -1,0 +1,1 @@
+set(CATCH2_INCLUDE_DIRECTORY ${PROJECT_SOURCE_DIR}/lovely/external/catch2/catch2/single_include PARENT_SCOPE)

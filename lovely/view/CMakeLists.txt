@@ -1,4 +1,5 @@
 include_directories(${PROJECT_SOURCE_DIR})
+include_directories(${CATCH2_INCLUDE_DIRECTORY})
 
 set(HEADER_FILES
     view.h
@@ -23,8 +24,6 @@ set(SOURCES_VIEW_UNIT_TESTS
     view.main.tests.cpp
     view.tests.cpp
 )
-
-include_directories(${CATCH2_INCLUDE_DIRECTORY})
 
 add_executable(${VIEW_UNIT_TESTS} ${SOURCES_VIEW_UNIT_TESTS})
 target_compile_features(${VIEW_UNIT_TESTS} PRIVATE cxx_std_17)
