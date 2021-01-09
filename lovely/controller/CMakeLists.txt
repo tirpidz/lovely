@@ -8,13 +8,13 @@ set(SOURCE_FILES
     controller.cpp
 )
 
-set(LIBRARY_CONTROLLER_NAME lovely_controller)
-set(LIBRARY_MODEL_NAME lovely_model)
+set(TARGET_CONTROLLER_NAME lovely_controller)
+set(LIBRARY_CONTROLLER_NAME ${TARGET_CONTROLLER_NAME} PARENT_SCOPE)
 
-add_library(${LIBRARY_CONTROLLER_NAME} ${SOURCE_FILES} ${HEADER_FILES})
-target_include_directories(${LIBRARY_CONTROLLER_NAME} PUBLIC .)
-target_compile_features(${LIBRARY_CONTROLLER_NAME} PUBLIC cxx_std_17)
-target_link_libraries(${LIBRARY_CONTROLLER_NAME} PRIVATE ${LIBRARY_MODEL_NAME})
+add_library(${TARGET_CONTROLLER_NAME} ${SOURCE_FILES} ${HEADER_FILES})
+target_include_directories(${TARGET_CONTROLLER_NAME} PUBLIC .)
+target_compile_features(${TARGET_CONTROLLER_NAME} PUBLIC cxx_std_17)
+target_link_libraries(${TARGET_CONTROLLER_NAME} PRIVATE ${LIBRARY_MODEL_NAME})
 
 set(CONTROLLER_UNIT_TESTS controller-unit-tests)
 
@@ -23,11 +23,11 @@ set(SOURCES_CONTROLLER_UNIT_TESTS
     controller.tests.cpp
 )
 
-include_directories(${PROJECT_SOURCE_DIR}/lovely/external/catch2/single_include)
+include_directories(${CATCH2_INCLUDE_DIRECTORY})
 
 add_executable(${CONTROLLER_UNIT_TESTS} ${SOURCES_CONTROLLER_UNIT_TESTS})
 target_compile_features(${CONTROLLER_UNIT_TESTS} PRIVATE cxx_std_17)
-target_link_libraries(${CONTROLLER_UNIT_TESTS} PRIVATE ${LIBRARY_CONTROLLER_NAME})
+target_link_libraries(${CONTROLLER_UNIT_TESTS} PRIVATE ${TARGET_CONTROLLER_NAME})
 
 set(RUN_TEST_AFTER_BUILD true)
 
