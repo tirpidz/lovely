@@ -15,13 +15,10 @@ if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
   set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 endif()
 
-add_subdirectory(external/catch2)
-add_subdirectory(external/curl)
-add_subdirectory(external/imgui)
-add_subdirectory(lovely/api)
 add_subdirectory(lovely/app)
-add_subdirectory(lovely/fetch)
-add_subdirectory(lovely/window)
+add_subdirectory(lovely/controller)
+add_subdirectory(lovely/model)
+add_subdirectory(lovely/view)
 
 configure_file(
   "${PROJECT_SOURCE_DIR}/version.h.in"
