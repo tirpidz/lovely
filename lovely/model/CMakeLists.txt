@@ -22,7 +22,7 @@ set(SOURCES_MODEL_UNIT_TESTS
 add_executable(${MODEL_UNIT_TESTS} ${SOURCES_MODEL_UNIT_TESTS})
 target_compile_features(${MODEL_UNIT_TESTS} PRIVATE cxx_std_17)
 target_link_libraries(${MODEL_UNIT_TESTS} PRIVATE ${TARGET_MODEL_NAME})
-target_include_directories(${MODEL_UNIT_TESTS} PRIVATE ${CATCH2_INCLUDE_DIRECTORY})
+target_link_libraries(${MODEL_UNIT_TESTS} PRIVATE Catch2::Catch2)
 
 set(RUN_TEST_AFTER_BUILD true)
 

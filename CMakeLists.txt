@@ -5,10 +5,6 @@ project(Lovely
   0.0.0 
   LANGUAGES CXX)
 
-SET(CMAKE_FIND_LIBRARY_SUFFIXES ".a")
-SET(BUILD_SHARED_LIBS OFF)
-SET(CMAKE_EXE_LINKER_FLAGS "-static")
-
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
@@ -20,6 +16,7 @@ if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
 endif()
 
 add_subdirectory(lovely/external/catch2)
+add_subdirectory(lovely/external/curl)
 add_subdirectory(lovely/app)
 add_subdirectory(lovely/controller)
 add_subdirectory(lovely/model)
