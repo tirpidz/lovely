@@ -1,20 +1,15 @@
-#include <lovely/controller/controller.h>
-#include <lovely/model/model.h>
 #include <lovely/version.h>
-#include <lovely/view/view.h>
 
 #include <iostream>
 
-using namespace lovely;
-
 int main(int argc, char* argv[]) {
-    controller::controller controller;
-    model::model model;
-    view::view view;
-
-    std::cout << "controller: " << controller.number() << std::endl;
-    std::cout << "model: " << model.number() << std::endl;
-    std::cout << "view: " << view.number() << std::endl;
-
+    std::cout << "name: " << lovely::LovelyName << std::endl;
+    std::cout << "version: " << lovely::LovelyVersion << std::endl;
+    std::cout << "major: " << lovely::LovelyMajorVersion << std::endl;
+    std::cout << "minor: " << lovely::LovelyMinorVersion << std::endl;
+    std::cout << "patch: " << lovely::LovelyPatchVersion << std::endl;
+    std::cout << "build timestamp: " << lovely::LovelyBuildTimestamp << std::endl;
+    std::cout << "major: " << lovely::LovelyTag << std::endl;
+    std::cout << "major: " << lovely::LovelyCommit << std::endl;
     return 0;
 }
