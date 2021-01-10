@@ -33,3 +33,4 @@
 
 # Build artefacts
 build/
+version.h
