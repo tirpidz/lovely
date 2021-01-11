@@ -2,7 +2,7 @@ name: CI to Docker Hub
 
 on:
   push:
-    branches: [ */* ]
+    branches: [ build/*, ci/*, docs/*, feat/*, fix/*, perf/*, refactor/*, test/* ]
 
 jobs:
   build:
