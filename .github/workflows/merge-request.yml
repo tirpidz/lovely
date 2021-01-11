@@ -1,10 +1,8 @@
-name: CI to Docker Hub
+name: Merge Request CI to Docker Hub
 
 on:
   pull_request:
-    branches: [ develop ]    
-
-  workflow_dispatch:
+    branches: [ develop ]
 
 jobs:
   build:

@@ -1,10 +1,8 @@
-name: CI to Docker Hub
+name: Release CI to Docker Hub
 
 on:
-  pull_request:
-    branches: [ develop ]    
-
-  workflow_dispatch:
+  push:
+    tags: v*.*.*    
 
 jobs:
   build:
@@ -22,6 +20,10 @@ jobs:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
 
+      - name: Get the version
+          id: vars
+          run: echo ::set-output name=tag::$(echo ${GITHUB_REF:10})
+
       - name: Set up Docker Buildx
         id: buildx
         uses: docker/setup-buildx-action@v1
@@ -32,7 +34,8 @@ jobs:
         with:
           context: ./
           file: ./Dockerfile
-          push: false
+          push: true
+          tags: tirpidz/lovely:${{steps.vars.outputs.tag}}
 
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
