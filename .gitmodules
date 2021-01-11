@@ -1,0 +1,9 @@
+[submodule "lovely/external/imgui/imgui"]
+	path = lovely/external/imgui/imgui
+	url = git@github.com:ocornut/imgui.git
+[submodule "lovely/external/curl/curl"]
+	path = lovely/external/curl/curl
+	url = git@github.com:curl/curl.git
+[submodule "lovely/external/catch2/catch2"]
+	path = lovely/external/catch2/catch2
+	url = git@github.com:catchorg/Catch2.git
