@@ -1,4 +1,4 @@
-name: Merge Request CI to Docker Hub
+name: merge request CI
 
 on:
   pull_request:
