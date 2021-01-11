@@ -13,6 +13,7 @@ target_include_directories(${TARGET_VIEW_NAME} PUBLIC include)
 target_compile_features(${TARGET_VIEW_NAME} PUBLIC cxx_std_17)
 target_link_libraries(${TARGET_VIEW_NAME} PRIVATE lovely_controller)
 target_link_libraries(${TARGET_VIEW_NAME} PRIVATE lovely_model)
+install(TARGETS ${TARGET_VIEW_NAME} DESTINATION lib)
 
 set(VIEW_UNIT_TESTS view-unit-tests)
 

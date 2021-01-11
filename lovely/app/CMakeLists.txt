@@ -23,14 +23,7 @@ target_link_libraries(${MAIN} PRIVATE lovely_controller)
 target_link_libraries(${MAIN} PRIVATE lovely_model)
 target_link_libraries(${MAIN} PRIVATE lovely_view)
 target_link_libraries(${MAIN} PRIVATE lovely_version)
-
-execute_process(
-    COMMAND "${GIT_EXECUTABLE}" describe --always --tags --abbrev=0
-    WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
-    OUTPUT_VARIABLE LOVELY_TAG_VERSION
-    OUTPUT_STRIP_TRAILING_WHITESPACE
-    ERROR_QUIET
-)
+install(TARGETS ${MAIN} DESTINATION bin)
 
 execute_process(
     COMMAND "${GIT_EXECUTABLE}" rev-parse --short HEAD

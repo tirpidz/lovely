@@ -12,6 +12,7 @@ add_library(${TARGET_CONTROLLER_NAME} ${SOURCE_FILES} ${HEADER_FILES})
 target_include_directories(${TARGET_CONTROLLER_NAME} PUBLIC include)
 target_compile_features(${TARGET_CONTROLLER_NAME} PUBLIC cxx_std_17)
 target_link_libraries(${TARGET_CONTROLLER_NAME} PRIVATE lovely_model)
+install(TARGETS ${TARGET_CONTROLLER_NAME} DESTINATION lib)
 
 set(CONTROLLER_UNIT_TESTS controller-unit-tests)
 
