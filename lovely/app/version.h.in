@@ -8,7 +8,6 @@ int LovelyMajorVersion = @PROJECT_VERSION_MAJOR@;
 int LovelyMinorVersion = @PROJECT_VERSION_MINOR@;
 int LovelyPatchVersion = @PROJECT_VERSION_PATCH@;
 const char* LovelyBuildTimestamp = "@LOVELY_BUILD_TIMESTAMP@";
-const char* LovelyTag = "@LOVELY_TAG_VERSION@";
 const char* LovelyCommit = "@LOVELY_COMMIT_VERSION@";
 }
 // clang-format on

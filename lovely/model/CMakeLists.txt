@@ -11,6 +11,7 @@ set(TARGET_MODEL_NAME lovely_model)
 add_library(${TARGET_MODEL_NAME} ${SOURCE_FILES} ${HEADER_FILES})
 target_include_directories(${TARGET_MODEL_NAME} PUBLIC include)
 target_compile_features(${TARGET_MODEL_NAME} PUBLIC cxx_std_17)
+install(TARGETS ${TARGET_MODEL_NAME} DESTINATION lib)
 
 set(MODEL_UNIT_TESTS model-unit-tests)
 
