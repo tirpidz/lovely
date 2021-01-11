@@ -4,7 +4,8 @@
 
 using namespace lovely;
 
-TEST_CASE("view number", "[view]") {
+TEST_CASE("view number", "[view]")
+{
     view::view view;
     REQUIRE(view.number() == 43);
 }
