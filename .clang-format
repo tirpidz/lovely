@@ -1,0 +1,13 @@
+AccessModifierOffset: -4
+BasedOnStyle: Google
+BreakBeforeBraces: Stroustrup
+BreakConstructorInitializers : BeforeComma
+BreakConstructorInitializersBeforeComma: true
+ColumnLimit: 120
+DerivePointerAlignment: false
+IndentWidth: 4
+KeepEmptyLinesAtTheStartOfBlocks: true
+PointerAlignment: Left
+SortIncludes: true
+SortUsingDeclarations: true
+Standard: Cpp11
