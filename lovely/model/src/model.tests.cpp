@@ -4,7 +4,8 @@
 
 using namespace lovely;
 
-TEST_CASE("model number", "[model]") {
+TEST_CASE("model number", "[model]")
+{
     model::model model;
     REQUIRE(model.number() == 42);
 }
