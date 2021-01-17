@@ -1,74 +1,102 @@
 #pragma once
 
-#include <cstddef>
+#include <initializer_list>
 #include <memory>
+#include <stdexcept>
 #include <string>
+#include <type_traits>
 #include <typeinfo>
 #include <unordered_map>
 #include <unordered_set>
+#include <utility>
+#include <vector>
 
 namespace lovely {
 
-template <class M>
-class registry final {
+namespace exception {
+
+class key_not_found final : public std::exception {
+    virtual const char* what() const throw() { return "key is not found"; }
+};
+
+class is_already_enrolled final : public std::exception {
+    virtual const char* what() const throw() { return "key is already enrolled"; }
+};
+
+class allocation_failed final : public std::exception {
+    virtual const char* what() const throw() { return "allocation failed"; }
+};
+
+class type_mismatch final : public std::exception {
+    virtual const char* what() const throw() { return "type mismatch"; }
+};
+
+}  // namespace exception
+
+template <class T>
+class listing {
 public:
-    Registry() = default;
-    virtual ~Registry() = default;
+    listing() = default;
+    ~listing() = default;
 
-    template <class T>
-    T* get(const std::string& key) const
+    listing(listing&) = delete;
+    listing& operator=(const listing&) = delete;
+
+    void enroll(const std::string& key)
     {
-        const std::size_t hash = getHash<T>();
+        auto unique_pointer = std::make_unique<T>();
+        T* pointer = unique_pointer.get();
+        _map.insert({key, pointer});
+        _all.push_back(pointer);
+        _pointers.push_back(std::move(unique_pointer));
+    }
 
-        auto it = classes_.constFind(hash);
+    const T& get(const std::string& key) const
+    {
+        const auto it = _map.find(key);
 
-        if (it == classes_.cend()) {
-            return nullptr;
+        if (it == _map.cend()) {
+            throw exception::key_not_found();
         }
 
-        return static_cast<T*>(*it);
+        return *(it->second);
     }
 
-    template <class T>
-    QString getName(const T*) const
-    {
-        return getName<T>();
-    }
+    const std::vector<T const*>& all() const { return _all; }
 
-    template <class T>
-    bool enroll(const std::string& key)
-    {
-        Class manager = std::make_unique<T>(*this);
-        M* ptr = manager.get();
+protected:
+    std::unordered_map<std::string, T const*> _map;
+    std::vector<T const*> _all;
+    std::vector<std::unique_ptr<T>> _pointers;
+};
 
-        if (ptr == nullptr) {
-            LH_WARN("manager allocation failed");
-            return false;
+template <class... Types>
+class registry final : public listing<Types>... {
+public:
+    registry() {}
+    ~registry() = default;
+
+    registry(registry&) = delete;
+    registry& operator=(const registry&) = delete;
+
+    template <typename T>
+    void enroll(const std::initializer_list<std::string>& keys)
+    {
+        for (auto key : keys) {
+            listing<T>::enroll(key);
         }
-
-        const std::size_t hash = getHash<T>();
-
-        if (classes_.contains(hash)) {
-            LH_WARN("manager(" << getName<T>() << ") with hash(" << hash << ") already registered : skipping... ");
-            return false;
-        }
-
-        classes_.insert(hash, ptr);
-        pointers_.insert(std::move(manager));
-        return true;
-    }
-
-private:
-    template <class T>
-    constexpr std::size_t get_hash() const
-    {
-        return typeid(T).hash_code();
     }
 
     template <class T>
-    constexpr std::string get_name() const
+    const T& get(const std::string& key) const
     {
-        return typeid(T).name();
+        return listing<T>::get(key);
+    }
+
+    template <class T>
+    const std::vector<T const*>& all() const
+    {
+        return listing<T>::all();
     }
 };
 
