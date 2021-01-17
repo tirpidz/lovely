@@ -4,6 +4,7 @@
 #include <memory>
 #include <stdexcept>
 #include <string>
+#include <tuple>
 #include <unordered_map>
 #include <vector>
 
@@ -25,7 +26,7 @@ class allocation_failed final : public std::exception {
 
 }  // namespace exception
 
-template <class T>
+template <typename T>
 class listing {
 public:
     listing() = default;
@@ -73,8 +74,8 @@ protected:
     std::vector<std::unique_ptr<T>> _pointers;
 };
 
-template <class... Types>
-class registry final : public listing<Types>... {
+template <typename... types>
+class registry final : public listing<types>... {
 public:
     registry() {}
     ~registry() = default;
@@ -90,13 +91,21 @@ public:
         }
     }
 
-    template <class T>
-    const T& get(const std::string& key) const
+    template <typename T>
+    const T& single(const std::string& key) const
     {
         return listing<T>::get(key);
     }
 
-    template <class T>
+    template <typename... sub_types>
+    const std::tuple<sub_types...>& many(const std::string& key) const
+    {
+        auto tuple = std::tuple<sub_types...>();
+        std::apply([&](auto&&... args) { ((args = single<typeof(args)>(key)), ...); }, tuple);
+        return std::move(tuple);
+    }
+
+    template <typename T>
     const std::vector<T const*>& all() const
     {
         return listing<T>::all();

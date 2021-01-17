@@ -7,8 +7,8 @@ namespace lovely {
 class stock final : public symbol {
 public:
     stock() {}
-    stock(const stock& other) = delete;
-    stock& operator=(const stock& other) = delete;
+    stock(const stock& other) = default;
+    stock& operator=(const stock& other) = default;
     ~stock() = default;
 };
 

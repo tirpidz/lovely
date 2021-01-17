@@ -5,8 +5,8 @@ namespace lovely {
 class symbol {
 public:
     symbol() {}
-    symbol(const symbol& other) = delete;
-    symbol& operator=(const symbol& other) = delete;
+    symbol(const symbol& other) = default;
+    symbol& operator=(const symbol& other) = default;
     ~symbol() = default;
 
     double market_value() const { return _market_value; }
