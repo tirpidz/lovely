@@ -7,8 +7,8 @@ namespace lovely {
 class etf final : public symbol {
 public:
     etf() {}
-    etf(const etf& other) = delete;
-    etf& operator=(const etf& other) = delete;
+    etf(const etf& other) = default;
+    etf& operator=(const etf& other) = default;
     ~etf() = default;
 };
 
