@@ -86,7 +86,7 @@ public:
     template <typename T>
     void enroll(const std::initializer_list<std::string>& keys)
     {
-        for (auto key : keys) {
+        for (const auto& key : keys) {
             listing<T>::enroll(key);
         }
     }
