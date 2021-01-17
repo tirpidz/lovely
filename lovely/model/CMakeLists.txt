@@ -1,5 +1,9 @@
 set(HEADER_FILES
     include/lovely/model/model.h
+    include/lovely/model/registry.h
+    include/lovely/model/symbol/etf.h
+    include/lovely/model/symbol/stock.h
+    include/lovely/model/symbol/symbol.h
 )
 
 set(SOURCE_FILES
@@ -18,6 +22,7 @@ set(MODEL_UNIT_TESTS model-unit-tests)
 set(SOURCES_MODEL_UNIT_TESTS
     src/model.main.tests.cpp
     src/model.tests.cpp
+    src/registry.tests.cpp
 )
 
 add_executable(${MODEL_UNIT_TESTS} ${SOURCES_MODEL_UNIT_TESTS})
