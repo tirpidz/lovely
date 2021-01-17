@@ -115,7 +115,7 @@ public:
     }
 
     template <typename... sub_types>
-    const std::tuple<sub_types...>& many(const std::string& key) const
+    const std::tuple<sub_types...> many(const std::string& key) const
     {
         auto tuple = std::tuple<sub_types...>();
         std::apply([&](auto&&... args) { ((args = single<typeof(args)>(key)), ...); }, tuple);
