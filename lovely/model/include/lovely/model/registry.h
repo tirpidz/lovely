@@ -26,7 +26,7 @@ class allocation_failed final : public std::exception {
 
 }  // namespace exception
 
-template <typename T>
+template <typename type>
 class listing {
 public:
     listing() = default;
@@ -35,7 +35,7 @@ public:
     listing(listing&) = delete;
     listing& operator=(const listing&) = delete;
 
-    void enroll(const std::string& key)
+    void enroll(const std::string& key, const type& value)
     {
         auto it = _map.find(key);
 
@@ -43,19 +43,19 @@ public:
             throw exception::is_already_enrolled();
         }
 
-        auto unique_pointer = std::make_unique<T>();
+        auto unique_pointer = std::make_unique<type>(value);
 
         if (unique_pointer == nullptr) {
             throw exception::allocation_failed();
         }
 
-        T* pointer = unique_pointer.get();
+        type* pointer = unique_pointer.get();
         _map.insert({key, pointer});
         _all.push_back(pointer);
         _pointers.push_back(std::move(unique_pointer));
     }
 
-    const T& get(const std::string& key) const
+    const type& get(const std::string& key) const
     {
         const auto it = _map.find(key);
 
@@ -66,12 +66,23 @@ public:
         return *(it->second);
     }
 
-    const std::vector<T const*>& all() const { return _all; }
+    void set(const std::string& key, const type& value)
+    {
+        const auto it = _map.find(key);
+
+        if (it == _map.cend()) {
+            throw exception::key_not_found();
+        }
+
+        *(it->second) = value;
+    }
+
+    const std::vector<type const*>& all() const { return _all; }
 
 protected:
-    std::unordered_map<std::string, T const*> _map;
-    std::vector<T const*> _all;
-    std::vector<std::unique_ptr<T>> _pointers;
+    std::unordered_map<std::string, type*> _map;
+    std::vector<type const*> _all;
+    std::vector<std::unique_ptr<type>> _pointers;
 };
 
 template <typename... types>
@@ -83,18 +94,24 @@ public:
     registry(registry&) = delete;
     registry& operator=(const registry&) = delete;
 
-    template <typename T>
-    void enroll(const std::initializer_list<std::string>& keys)
+    template <typename type>
+    void enroll(std::initializer_list<std::pair<std::string, type>> pairs)
     {
-        for (const auto& key : keys) {
-            listing<T>::enroll(key);
+        for (const auto& pair : pairs) {
+            listing<type>::enroll(pair.first, pair.second);
         }
     }
 
-    template <typename T>
-    const T& single(const std::string& key) const
+    template <typename type>
+    const type& single(const std::string& key) const
     {
-        return listing<T>::get(key);
+        return listing<type>::get(key);
+    }
+
+    template <typename type>
+    void set_single(const std::string& key, const type& value)
+    {
+        listing<type>::set(key, value);
     }
 
     template <typename... sub_types>
@@ -105,10 +122,16 @@ public:
         return std::move(tuple);
     }
 
-    template <typename T>
-    const std::vector<T const*>& all() const
+    template <typename... sub_types>
+    void set_many(const std::string& key, const sub_types&... value)
     {
-        return listing<T>::all();
+        (..., set_single(key, value));
+    }
+
+    template <typename type>
+    const std::vector<type const*>& all() const
+    {
+        return listing<type>::all();
     }
 };
 
