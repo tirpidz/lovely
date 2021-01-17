@@ -4,11 +4,7 @@
 #include <memory>
 #include <stdexcept>
 #include <string>
-#include <type_traits>
-#include <typeinfo>
 #include <unordered_map>
-#include <unordered_set>
-#include <utility>
 #include <vector>
 
 namespace lovely {
@@ -27,10 +23,6 @@ class allocation_failed final : public std::exception {
     virtual const char* what() const throw() { return "allocation failed"; }
 };
 
-class type_mismatch final : public std::exception {
-    virtual const char* what() const throw() { return "type mismatch"; }
-};
-
 }  // namespace exception
 
 template <class T>
@@ -44,7 +36,18 @@ public:
 
     void enroll(const std::string& key)
     {
+        auto it = _map.find(key);
+
+        if (it != _map.cend()) {
+            throw exception::is_already_enrolled();
+        }
+
         auto unique_pointer = std::make_unique<T>();
+
+        if (unique_pointer == nullptr) {
+            throw exception::allocation_failed();
+        }
+
         T* pointer = unique_pointer.get();
         _map.insert({key, pointer});
         _all.push_back(pointer);
