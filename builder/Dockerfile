@@ -8,5 +8,5 @@ RUN apt-get update && \
     build-essential \
     cmake \
     git \
-    gcc-8 g++-8 \
+    gcc-10 g++-9 \
     libssl-dev
