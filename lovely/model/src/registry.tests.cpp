@@ -3,6 +3,7 @@
 #include <lovely/model/symbol/stock.h>
 
 #include <catch2/catch.hpp>
+#include <functional>
 #include <string>
 #include <tuple>
 #include <vector>
@@ -29,8 +30,8 @@ TEST_CASE("registry enroll", "[registry]")
     REQUIRE(value == bool_ref);
 
     auto [td_stock, td_bool] = registry.many<stock, bool>("tse:td");
-    const std::vector<etf const*>& s = registry.all<etf>();
-    const std::vector<stock const*>& s2 = registry.all<stock>();
+    const std::vector<std::reference_wrapper<etf>>& s = registry.all<etf>();
+    const std::vector<std::reference_wrapper<stock>>& s2 = registry.all<stock>();
 
     REQUIRE(td_bool == bool_ref);
     REQUIRE(s.size() == 1);
