@@ -1,5 +1,6 @@
 #pragma once
 
+#include <functional>
 #include <initializer_list>
 #include <memory>
 #include <stdexcept>
@@ -51,7 +52,7 @@ public:
 
         type* pointer = unique_pointer.get();
         _map.insert({key, pointer});
-        _all.push_back(pointer);
+        _all.push_back(*pointer);
         _pointers.push_back(std::move(unique_pointer));
     }
 
@@ -77,11 +78,11 @@ public:
         *(it->second) = value;
     }
 
-    const std::vector<type const*>& all() const { return _all; }
+    const std::vector<std::reference_wrapper<type>>& all() const { return _all; }
 
 protected:
     std::unordered_map<std::string, type*> _map;
-    std::vector<type const*> _all;
+    std::vector<std::reference_wrapper<type>> _all;
     std::vector<std::unique_ptr<type>> _pointers;
 };
 
@@ -115,7 +116,7 @@ public:
     }
 
     template <typename... sub_types>
-    const std::tuple<sub_types...> many(const std::string& key) const
+    std::tuple<const sub_types...> many(const std::string& key) const
     {
         auto tuple = std::tuple<sub_types...>();
         std::apply([&](auto&&... args) { ((args = single<typeof(args)>(key)), ...); }, tuple);
@@ -129,7 +130,7 @@ public:
     }
 
     template <typename type>
-    const std::vector<type const*>& all() const
+    const std::vector<std::reference_wrapper<type>>& all() const
     {
         return listing<type>::all();
     }
