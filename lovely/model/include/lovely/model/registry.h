@@ -119,7 +119,7 @@ public:
     {
         auto tuple = std::tuple<sub_types...>();
         std::apply([&](auto&&... args) { ((args = single<typeof(args)>(key)), ...); }, tuple);
-        return std::move(tuple);
+        return tuple;
     }
 
     template <typename... sub_types>
