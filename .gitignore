@@ -34,3 +34,6 @@
 # Build artefacts
 build/
 *version.h
+
+# CMake
+*.user
