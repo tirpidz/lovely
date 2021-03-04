@@ -1,31 +1,16 @@
 #pragma once
 
+#include <lovely/model/exceptions.h>
+
 #include <functional>
 #include <initializer_list>
 #include <memory>
-#include <stdexcept>
 #include <string>
 #include <tuple>
 #include <unordered_map>
 #include <vector>
 
 namespace lovely {
-
-namespace exception {
-
-class key_not_found final : public std::exception {
-    virtual const char* what() const throw() { return "key is not found"; }
-};
-
-class is_already_enrolled final : public std::exception {
-    virtual const char* what() const throw() { return "key is already enrolled"; }
-};
-
-class allocation_failed final : public std::exception {
-    virtual const char* what() const throw() { return "allocation failed"; }
-};
-
-}  // namespace exception
 
 template <typename type>
 class listing {
@@ -41,13 +26,13 @@ public:
         auto it = _map.find(key);
 
         if (it != _map.cend()) {
-            throw exception::is_already_enrolled();
+            throw exception::model::is_already_enrolled();
         }
 
         auto unique_pointer = std::make_unique<type>(value);
 
         if (unique_pointer == nullptr) {
-            throw exception::allocation_failed();
+            throw exception::model::allocation_failed();
         }
 
         type* pointer = unique_pointer.get();
@@ -61,7 +46,7 @@ public:
         const auto it = _map.find(key);
 
         if (it == _map.cend()) {
-            throw exception::key_not_found();
+            throw exception::model::key_not_found();
         }
 
         return *(it->second);
@@ -72,7 +57,7 @@ public:
         const auto it = _map.find(key);
 
         if (it == _map.cend()) {
-            throw exception::key_not_found();
+            throw exception::model::key_not_found();
         }
 
         *(it->second) = value;
@@ -87,7 +72,7 @@ protected:
 };
 
 template <typename... types>
-class registry final : public listing<types>... {
+class registry final : private listing<types>... {
 public:
     registry() {}
     virtual ~registry() = default;

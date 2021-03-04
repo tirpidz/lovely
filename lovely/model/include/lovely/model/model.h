@@ -1,22 +1,36 @@
 #pragma once
 
-#include <cstdint>
+#include <lovely/model/exceptions.h>
+#include <lovely/model/registry.h>
+
+#include <functional>
 
 namespace lovely {
-namespace model {
 
+template <typename... types>
 class model final {
 public:
-    model();
-    model(const model& other) = delete;
-    model& operator=(const model& other) = delete;
+    model() : _has_been_initialized(false) {}
     ~model() = default;
 
-    int64_t number() const { return _number; }
+    model(const model& other) = delete;
+    model& operator=(const model& other) = delete;
+
+    void initialize(std::function<void(registry<types...>&)> callback)
+    {
+        if (_has_been_initialized) {
+            throw exception::model::already_has_been_initialized();
+        }
+
+        _has_been_initialized = true;
+        callback(_data);
+    }
+
+    const registry<types...>& data() { return _data; }
 
 private:
-    int64_t _number;
+    bool _has_been_initialized;
+    registry<types...> _data;
 };
 
-}  // namespace model
 }  // namespace lovely
