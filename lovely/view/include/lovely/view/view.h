@@ -8,9 +8,10 @@ namespace view {
 class view final {
 public:
     view();
+    ~view() = default;
+
     view(const view& other) = delete;
     view& operator=(const view& other) = delete;
-    ~view() = default;
 
     int64_t number() const { return _number; }
 
