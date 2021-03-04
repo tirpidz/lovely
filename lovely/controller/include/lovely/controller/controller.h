@@ -8,9 +8,10 @@ namespace controller {
 class controller final {
 public:
     controller();
+    ~controller() = default;
+
     controller(const controller& other) = delete;
     controller& operator=(const controller& other) = delete;
-    ~controller() = default;
 
     int64_t number() const { return _number; }
 
