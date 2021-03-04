@@ -33,7 +33,7 @@ public:
     listing() = default;
     ~listing() = default;
 
-    listing(listing&) = delete;
+    listing(const listing&) = delete;
     listing& operator=(const listing&) = delete;
 
     void enroll(const std::string& key, const type& value)
@@ -90,9 +90,9 @@ template <typename... types>
 class registry final : public listing<types>... {
 public:
     registry() {}
-    ~registry() = default;
+    virtual ~registry() = default;
 
-    registry(registry&) = delete;
+    registry(const registry&) = delete;
     registry& operator=(const registry&) = delete;
 
     template <typename type>
