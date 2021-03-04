@@ -12,6 +12,82 @@
 
 using namespace lovely;
 
+TEST_CASE("listing enroll", "[listing]")
+{
+    listing<int> listing_1;
+    listing<bool> listing_2;
+
+    const int int_ref = 42;
+    const bool bool_ref = true;
+
+    listing_1.enroll("tse:rbc", int_ref);
+    listing_2.enroll("tse:rbc", bool_ref);
+
+    SECTION("enroll throw when required")
+    {
+        REQUIRE_THROWS(listing_1.enroll("tse:rbc", int_ref));
+        REQUIRE_THROWS(listing_2.enroll("tse:rbc", bool_ref));
+    }
+}
+
+TEST_CASE("listing get", "[listing]")
+{
+    listing<int> listing_1;
+    listing<int> listing_2;
+
+    const int int_ref = 42;
+
+    listing_1.enroll("tse:rbc", int_ref);
+    const int& int_value = listing_1.get("tse:rbc");
+
+    REQUIRE(int_value == int_ref);
+
+    SECTION("set throw when required")
+    {
+        REQUIRE_THROWS(listing_1.get("tse:not-found"));
+        REQUIRE_THROWS(listing_2.get("tse:rbc"));
+    }
+}
+
+TEST_CASE("listing set", "[listing]")
+{
+    listing<int> listing_1;
+    listing<int> listing_2;
+
+    const int int_ref = 42;
+    const int int_modified_ref = 41;
+
+    listing_1.enroll("tse:rbc", int_ref);
+    listing_1.set("tse:rbc", int_modified_ref);
+
+    const int& int_value = listing_1.get("tse:rbc");
+
+    REQUIRE(int_value == int_modified_ref);
+
+    SECTION("set throw when required")
+    {
+        REQUIRE_THROWS(listing_1.set("tse:not-found", int_modified_ref));
+        REQUIRE_THROWS(listing_2.set("tse:rbc", int_modified_ref));
+    }
+}
+
+TEST_CASE("listing all", "[listing]")
+{
+    listing<int> listing_1;
+    listing<int> listing_2;
+
+    const int int_ref = 42;
+    const int int_ref_2 = 41;
+
+    listing_1.enroll("tse:rbc", int_ref);
+    listing_1.enroll("tse:td", int_ref_2);
+
+    const std::vector<std::reference_wrapper<int>>& int_values = listing_1.all();
+
+    REQUIRE(int_values[0] == int_ref);
+    REQUIRE(int_values[1] == int_ref_2);
+}
+
 TEST_CASE("registry enroll", "[registry]")
 {
     registry<stock, etf, bool, int> registry;
@@ -121,80 +197,4 @@ TEST_CASE("registry all", "[registry]")
     REQUIRE(s_3.size() == 1);
     REQUIRE(s_3[0] == bool_ref);
     REQUIRE(s_4.size() == 0);
-}
-
-TEST_CASE("listing enroll", "[listing]")
-{
-    listing<int> listing_1;
-    listing<bool> listing_2;
-
-    const int int_ref = 42;
-    const bool bool_ref = true;
-
-    listing_1.enroll("tse:rbc", int_ref);
-    listing_2.enroll("tse:rbc", bool_ref);
-
-    SECTION("enroll throw when required")
-    {
-        REQUIRE_THROWS(listing_1.enroll("tse:rbc", int_ref));
-        REQUIRE_THROWS(listing_2.enroll("tse:rbc", bool_ref));
-    }
-}
-
-TEST_CASE("listing get", "[listing]")
-{
-    listing<int> listing_1;
-    listing<int> listing_2;
-
-    const int int_ref = 42;
-
-    listing_1.enroll("tse:rbc", int_ref);
-    const int& int_value = listing_1.get("tse:rbc");
-
-    REQUIRE(int_value == int_ref);
-
-    SECTION("set throw when required")
-    {
-        REQUIRE_THROWS(listing_1.get("tse:not-found"));
-        REQUIRE_THROWS(listing_2.get("tse:rbc"));
-    }
-}
-
-TEST_CASE("listing set", "[listing]")
-{
-    listing<int> listing_1;
-    listing<int> listing_2;
-
-    const int int_ref = 42;
-    const int int_modified_ref = 41;
-
-    listing_1.enroll("tse:rbc", int_ref);
-    listing_1.set("tse:rbc", int_modified_ref);
-
-    const int& int_value = listing_1.get("tse:rbc");
-
-    REQUIRE(int_value == int_modified_ref);
-
-    SECTION("set throw when required")
-    {
-        REQUIRE_THROWS(listing_1.set("tse:not-found", int_modified_ref));
-        REQUIRE_THROWS(listing_2.set("tse:rbc", int_modified_ref));
-    }
-}
-
-TEST_CASE("listing all", "[listing]")
-{
-    listing<int> listing_1;
-    listing<int> listing_2;
-
-    const int int_ref = 42;
-    const int int_ref_2 = 41;
-
-    listing_1.enroll("tse:rbc", int_ref);
-    listing_1.enroll("tse:td", int_ref_2);
-
-    const std::vector<std::reference_wrapper<int>>& int_values = listing_1.all();
-
-    REQUIRE(int_values[0] == int_ref);
-    REQUIRE(int_values[1] == int_ref_2);
 }
