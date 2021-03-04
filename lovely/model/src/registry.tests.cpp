@@ -100,7 +100,7 @@ TEST_CASE("registry enroll", "[registry]")
     registry.enroll<bool>({{"tse:td", bool_ref}});
     registry.enroll<int>({{"tse:td", int_ref}});
 
-    SECTION("enroll throw when required")
+    SECTION("enroll throw when enrolling already enrolled")
     {
         REQUIRE_THROWS(registry.enroll<stock>({{"tse:td", {}}}));
         REQUIRE_THROWS(registry.enroll<stock>({{"tse:rbc", {}}}));
@@ -134,7 +134,7 @@ TEST_CASE("registry single", "[registry]")
 
     REQUIRE(value_modified == !bool_ref);
 
-    SECTION("single throw when required")
+    SECTION("single throw when not found")
     {
         REQUIRE_THROWS(registry.single<stock>({"tse:not-found"}));
         REQUIRE_THROWS(registry.set_single<stock>({"tse:not-found"}, {}));
@@ -169,7 +169,7 @@ TEST_CASE("registry many", "[registry]")
     REQUIRE(td_bool_4 == bool_ref);
     REQUIRE(td_int_4 == int_modified_ref);
 
-    SECTION("many throw when required")
+    SECTION("many throw when not found")
     {
         REQUIRE_THROWS(registry.many<stock, bool>("tse:not-found"));
         REQUIRE_THROWS(registry.set_many<bool>("tse:vab", true));
