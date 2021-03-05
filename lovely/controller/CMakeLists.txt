@@ -1,5 +1,6 @@
 set(HEADER_FILES
     include/lovely/controller/controller.h
+    include/lovely/controller/exceptions.h
 )
 
 set(SOURCE_FILES
@@ -11,7 +12,7 @@ set(TARGET_CONTROLLER_NAME lovely_controller)
 add_library(${TARGET_CONTROLLER_NAME} ${SOURCE_FILES} ${HEADER_FILES})
 target_include_directories(${TARGET_CONTROLLER_NAME} PUBLIC include)
 target_compile_features(${TARGET_CONTROLLER_NAME} PUBLIC cxx_std_17)
-target_link_libraries(${TARGET_CONTROLLER_NAME} PRIVATE lovely_model)
+target_link_libraries(${TARGET_CONTROLLER_NAME} PUBLIC lovely_model)
 install(TARGETS ${TARGET_CONTROLLER_NAME} DESTINATION lib)
 
 set(CONTROLLER_UNIT_TESTS controller-unit-tests)
