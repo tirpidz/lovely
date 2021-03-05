@@ -7,7 +7,7 @@
 
 using namespace lovely;
 
-TEST_CASE("model enroll", "[model]")
+TEST_CASE("model initialize", "[model]")
 {
     const bool bool_ref = true;
     const int int_ref = 42;
@@ -30,5 +30,9 @@ TEST_CASE("model enroll", "[model]")
     REQUIRE(bool_value == bool_ref);
     REQUIRE(int_value == int_ref);
 
-    SECTION("enroll throw when trying to enroll a second time") { REQUIRE_THROWS(model.initialize()); }
+    SECTION("throw when callback is null")
+    {
+        REQUIRE_THROWS([&]() { lovely::model<stock, etf, bool, int> model(nullptr); }());
+    }
+    SECTION("throw when trying to initialize a second time") { REQUIRE_THROWS(model.initialize()); }
 }
