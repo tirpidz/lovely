@@ -3,7 +3,6 @@
 #include <cstdint>
 
 namespace lovely {
-namespace controller {
 
 class controller final {
 public:
@@ -19,5 +18,4 @@ private:
     int64_t _number;
 };
 
-}  // namespace controller
 }  // namespace lovely
