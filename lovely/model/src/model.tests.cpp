@@ -20,7 +20,9 @@ TEST_CASE("model initialize", "[model]")
     };
 
     model<stock, etf, bool, int> model(initialization_callback);
+    REQUIRE(!model.is_initialized());
     model.initialize();
+    REQUIRE(model.is_initialized());
 
     const auto& data = model.data();
 

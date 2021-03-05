@@ -3,6 +3,4 @@
 
 namespace lovely {
 
-controller::controller() : _number(41) {}
-
 }  // namespace lovely
