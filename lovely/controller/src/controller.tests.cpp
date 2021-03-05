@@ -6,6 +6,6 @@ using namespace lovely;
 
 TEST_CASE("controller number", "[controller]")
 {
-    controller::controller controller;
+    controller controller;
     REQUIRE(controller.number() == 41);
 }
