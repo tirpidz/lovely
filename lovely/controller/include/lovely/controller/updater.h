@@ -1,6 +1,7 @@
 #pragma once
 
 #include <lovely/controller/exceptions.h>
+#include <lovely/model/model.h>
 
 #include <cstdint>
 #include <functional>

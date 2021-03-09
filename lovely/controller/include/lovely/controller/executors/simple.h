@@ -1,7 +1,5 @@
 #pragma once
 
-#include <lovely/model/model.h>
-
 #include <string>
 
 namespace lovely {
