@@ -8,7 +8,7 @@
 namespace lovely {
 
 template <typename... types>
-class model final {
+class model final : public registry<types...> {
 public:
     model(std::function<void(registry<types...>&)> initialize_callback)
         : _initialize_callback(initialize_callback)
@@ -20,7 +20,7 @@ public:
     }
 
     model() = delete;
-    ~model() = default;
+    virtual ~model() = default;
 
     model(const model& other) = delete;
     model& operator=(const model& other) = delete;
@@ -32,16 +32,14 @@ public:
         }
 
         _is_initialized = true;
-        _initialize_callback(_data);
+        _initialize_callback(*this);
     }
 
     const bool is_initialized() const { return _is_initialized; }
-    const registry<types...>& data() { return _data; }
 
 private:
     std::function<void(registry<types...>&)> _initialize_callback;
     bool _is_initialized;
-    registry<types...> _data;
 };
 
 }  // namespace lovely

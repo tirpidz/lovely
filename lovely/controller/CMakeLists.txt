@@ -1,6 +1,8 @@
 set(HEADER_FILES
     include/lovely/controller/controller.h
     include/lovely/controller/exceptions.h
+    include/lovely/controller/executors/simple.h
+    include/lovely/controller/updater.h
 )
 
 set(SOURCE_FILES

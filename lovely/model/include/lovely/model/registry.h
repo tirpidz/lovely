@@ -2,11 +2,9 @@
 
 #include <lovely/model/exceptions.h>
 
-#include <functional>
 #include <initializer_list>
 #include <memory>
 #include <string>
-#include <tuple>
 #include <unordered_map>
 #include <vector>
 
@@ -16,7 +14,7 @@ template <typename type>
 class listing {
 public:
     listing() = default;
-    ~listing() = default;
+    virtual ~listing() = default;
 
     listing(const listing&) = delete;
     listing& operator=(const listing&) = delete;
@@ -41,7 +39,7 @@ public:
         _pointers.push_back(std::move(unique_pointer));
     }
 
-    const type& get(const std::string& key) const
+    void get(const std::string& key, type& value) const
     {
         const auto it = _map.find(key);
 
@@ -49,7 +47,7 @@ public:
             throw exception::model::key_not_found();
         }
 
-        return *(it->second);
+        value = *(it->second);
     }
 
     void set(const std::string& key, const type& value)
@@ -72,9 +70,9 @@ protected:
 };
 
 template <typename... types>
-class registry final : private listing<types>... {
+class registry : private listing<types>... {
 public:
-    registry() {}
+    registry() = default;
     virtual ~registry() = default;
 
     registry(const registry&) = delete;
@@ -89,29 +87,27 @@ public:
     }
 
     template <typename type>
-    const type& single(const std::string& key) const
+    void get(const std::string& key, type& value) const
     {
-        return listing<type>::get(key);
+        return listing<type>::get(key, value);
     }
 
     template <typename type>
-    void set_single(const std::string& key, const type& value)
+    void set(const std::string& key, const type& value)
     {
         listing<type>::set(key, value);
     }
 
     template <typename... sub_types>
-    std::tuple<const sub_types...> many(const std::string& key) const
+    void get_values(const std::string& key, sub_types&... value) const
     {
-        auto tuple = std::tuple<sub_types...>();
-        std::apply([&](auto&&... args) { ((args = single<typeof(args)>(key)), ...); }, tuple);
-        return tuple;
+        (..., get(key, value));
     }
 
     template <typename... sub_types>
-    void set_many(const std::string& key, const sub_types&... value)
+    void set_values(const std::string& key, const sub_types&... value)
     {
-        (..., set_single(key, value));
+        (..., set(key, value));
     }
 
     template <typename type>

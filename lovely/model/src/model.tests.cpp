@@ -24,10 +24,11 @@ TEST_CASE("model initialize", "[model]")
     model.initialize();
     REQUIRE(model.is_initialized());
 
-    const auto& data = model.data();
+    bool bool_value = false;
+    int int_value = 0;
 
-    const bool& bool_value = data.single<bool>("tse:td");
-    const int& int_value = data.single<int>("tse:td");
+    model.get("tse:td", bool_value);
+    model.get("tse:td", int_value);
 
     REQUIRE(bool_value == bool_ref);
     REQUIRE(int_value == int_ref);
