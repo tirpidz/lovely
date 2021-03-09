@@ -19,18 +19,16 @@ public:
 
     void simple_math(const std::string& key, const int increment)
     {
-        int input = 0;
-        _model.get(key, input);
+        int value = 0;
+        _model.get(key, value);
 
-        int output = 0;
+        do_simple_math(value, increment);
 
-        do_simple_math(output, input, increment);
-
-        _model.set(key, output);
+        _model.set(key, value);
     }
 
 protected:
-    void do_simple_math(int& output, const int input, const int increment) { output = input + increment; }
+    void do_simple_math(int& value, const int increment) { value += increment; }
 
 private:
     model& _model;
