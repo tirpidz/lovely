@@ -1,4 +1,6 @@
 #include <lovely/controller/controller.h>
+#include <lovely/controller/executors/simple.h>
+#include <lovely/controller/updater.h>
 #include <lovely/model/model.h>
 #include <lovely/model/registry.h>
 #include <lovely/model/symbol/etf.h>
@@ -26,25 +28,23 @@ TEST_CASE("controller initialize", "[controller]")
     auto update_external_callback = [&](lovely::model<stock, etf, bool, int>& model) { (void)model; };
     auto update_derived_callback = [&](lovely::model<stock, etf, bool, int>& model) { (void)model; };
 
-    controller<stock, etf, bool, int> controller(model, update_external_callback, update_derived_callback);
+    updater<stock, etf, bool, int> updater(model, update_external_callback, update_derived_callback);
+
+    controller<typeof(model), typeof(updater), simple<typeof(model)>> controller(model, updater);
+
+    controller.simple_math("tse:td", int_ref);
+
+    int int_value_modified = 0;
+    model.get("tse:td", int_value_modified);
+
+    REQUIRE(int_value_modified == 2 * int_ref);
 
     SECTION("throw when callback is null")
     {
         REQUIRE_THROWS(
-            [&]() { lovely::controller<stock, etf, bool, int> controller(model, nullptr, update_derived_callback); }());
-        REQUIRE_THROWS([&]() {
-            lovely::controller<stock, etf, bool, int> controller(model, update_external_callback, nullptr);
-        }());
-        REQUIRE_THROWS([&]() { lovely::controller<stock, etf, bool, int> controller(model, nullptr, nullptr); }());
-    }
-
-    SECTION("throw when model is not initialized")
-    {
-        lovely::model<stock, etf, bool, int> uninitialized_model(initialization_callback);
-
-        REQUIRE_THROWS([&]() {
-            lovely::controller<stock, etf, bool, int> controller(uninitialized_model, update_external_callback,
-                                                                 update_derived_callback);
-        }());
+            [&]() { lovely::updater<stock, etf, bool, int> updater(model, nullptr, update_derived_callback); }());
+        REQUIRE_THROWS(
+            [&]() { lovely::updater<stock, etf, bool, int> updater(model, update_external_callback, nullptr); }());
+        REQUIRE_THROWS([&]() { lovely::updater<stock, etf, bool, int> updater(model, nullptr, nullptr); }());
     }
 }
