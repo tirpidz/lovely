@@ -24,14 +24,14 @@ TEST_CASE("model initialize", "[model]")
     model.initialize();
     REQUIRE(model.is_initialized());
 
-    bool bool_value = false;
-    int int_value = 0;
+    bool const* bool_value = nullptr;
+    int* int_value = nullptr;
 
-    model.get("tse:td", bool_value);
+    model.cget("tse:td", bool_value);
     model.get("tse:td", int_value);
 
-    REQUIRE(bool_value == bool_ref);
-    REQUIRE(int_value == int_ref);
+    REQUIRE(*bool_value == bool_ref);
+    REQUIRE(*int_value == int_ref);
 
     SECTION("throw when callback is null")
     {

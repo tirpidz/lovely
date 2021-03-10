@@ -38,15 +38,20 @@ TEST_CASE("listing get", "[listing]")
 
     listing_1.enroll("tse:rbc", int_ref);
 
-    int int_value = 0;
-    listing_1.get("tse:rbc", int_value);
+    int const* int_value = nullptr;
+    int* int_value_2 = nullptr;
+    listing_1.cget("tse:rbc", int_value);
+    listing_1.get("tse:rbc", int_value_2);
 
-    REQUIRE(int_value == int_ref);
+    REQUIRE(*int_value == int_ref);
+    REQUIRE(*int_value_2 == int_ref);
 
     SECTION("set throw when required")
     {
-        REQUIRE_THROWS(listing_1.get("tse:not-found", int_value));
-        REQUIRE_THROWS(listing_2.get("tse:rbc", int_value));
+        REQUIRE_THROWS(listing_1.cget("tse:not-found", int_value));
+        REQUIRE_THROWS(listing_2.cget("tse:rbc", int_value));
+        REQUIRE_THROWS(listing_1.get("tse:not-found", int_value_2));
+        REQUIRE_THROWS(listing_2.get("tse:rbc", int_value_2));
     }
 }
 
@@ -61,10 +66,13 @@ TEST_CASE("listing set", "[listing]")
     listing_1.enroll("tse:rbc", int_ref);
     listing_1.set("tse:rbc", int_modified_ref);
 
-    int int_value = 0;
-    listing_1.get("tse:rbc", int_value);
+    int const* int_value = nullptr;
+    int* int_value_2 = nullptr;
+    listing_1.cget("tse:rbc", int_value);
+    listing_1.get("tse:rbc", int_value_2);
 
-    REQUIRE(int_value == int_modified_ref);
+    REQUIRE(*int_value == int_modified_ref);
+    REQUIRE(*int_value_2 == int_modified_ref);
 
     SECTION("set throw when required")
     {
@@ -83,10 +91,16 @@ TEST_CASE("listing all", "[listing]")
     listing.enroll("tse:rbc", int_ref);
     listing.enroll("tse:td", int_ref_2);
 
-    const auto& int_values = listing.all();
+    std::vector<int const*> all;
+    std::vector<int*> all_2;
 
-    REQUIRE(int_values[0] == int_ref);
-    REQUIRE(int_values[1] == int_ref_2);
+    listing.call(all);
+    listing.all(all_2);
+
+    REQUIRE(*(all[0]) == int_ref);
+    REQUIRE(*(all[1]) == int_ref_2);
+    REQUIRE(*(all_2[0]) == int_ref);
+    REQUIRE(*(all_2[1]) == int_ref_2);
 }
 
 TEST_CASE("registry enroll", "[registry]")
@@ -108,7 +122,7 @@ TEST_CASE("registry enroll", "[registry]")
     }
 }
 
-TEST_CASE("registry get", "[registry]")
+TEST_CASE("registry geT and set", "[registry]")
 {
     registry<stock, etf, bool, int> registry;
 
@@ -120,37 +134,58 @@ TEST_CASE("registry get", "[registry]")
     registry.enroll<bool>({{"tse:td", bool_ref}});
     registry.enroll<int>({{"tse:td", int_ref}});
 
-    stock td;
-    stock rbc;
-    etf vab;
-    bool bool_value = false;
-    int int_value = 0;
+    stock const* td = nullptr;
+    stock const* rbc = nullptr;
+    etf const* vab = nullptr;
+    bool const* bool_value = nullptr;
+    int const* int_value = nullptr;
 
-    registry.get("tse:td", td);
-    registry.get("tse:rbc", rbc);
-    registry.get("tse:vab", vab);
-    registry.get("tse:td", bool_value);
-    registry.get("tse:td", int_value);
+    stock* td_2 = nullptr;
+    stock* rbc_2 = nullptr;
+    etf* vab_2 = nullptr;
+    bool* bool_value_2 = nullptr;
+    int* int_value_2 = nullptr;
 
-    REQUIRE(bool_value == bool_ref);
-    REQUIRE(int_value == int_ref);
+    registry.cget("tse:td", td);
+    registry.cget("tse:rbc", rbc);
+    registry.cget("tse:vab", vab);
+    registry.cget("tse:td", bool_value);
+    registry.cget("tse:td", int_value);
+
+    registry.get("tse:td", td_2);
+    registry.get("tse:rbc", rbc_2);
+    registry.get("tse:vab", vab_2);
+    registry.get("tse:td", bool_value_2);
+    registry.get("tse:td", int_value_2);
+
+    REQUIRE(*bool_value == bool_ref);
+    REQUIRE(*int_value == int_ref);
+
+    REQUIRE(*bool_value_2 == bool_ref);
+    REQUIRE(*int_value_2 == int_ref);
 
     REQUIRE_NOTHROW(registry.set("tse:td", !bool_ref));
 
-    bool value_modified = bool_ref;
-    registry.get("tse:td", value_modified);
+    bool const* value_modified = nullptr;
+    bool* value_modified_2 = nullptr;
 
-    REQUIRE(value_modified == !bool_ref);
+    registry.cget("tse:td", value_modified);
+    registry.get("tse:td", value_modified_2);
+
+    REQUIRE(*value_modified == !bool_ref);
+    REQUIRE(*value_modified_2 == !bool_ref);
 
     SECTION("get throw when not found")
     {
-        stock not_found;
-        REQUIRE_THROWS(registry.get("tse:not-found", not_found));
-        REQUIRE_THROWS(registry.set("tse:not-found", not_found));
+        stock const* not_found = nullptr;
+        stock* not_found_2 = nullptr;
+        REQUIRE_THROWS(registry.cget("tse:not-found", not_found));
+        REQUIRE_THROWS(registry.get("tse:not-found", not_found_2));
+        REQUIRE_THROWS(registry.set("tse:not-found", true));
     }
 }
 
-TEST_CASE("registry get_values", "[registry]")
+TEST_CASE("registry get and set multiple arguments", "[registry]")
 {
     registry<stock, etf, bool, int> registry;
 
@@ -163,40 +198,69 @@ TEST_CASE("registry get_values", "[registry]")
     registry.enroll<bool>({{"tse:td", bool_ref}});
     registry.enroll<int>({{"tse:td", int_ref}});
 
-    bool td_bool_1 = false;
-    bool td_bool_2 = false;
-    bool td_bool_3 = false;
+    bool const* td_bool_1 = nullptr;
+    bool const* td_bool_2 = nullptr;
+    bool const* td_bool_3 = nullptr;
 
-    stock td_stock_2;
-    stock td_stock_3;
+    stock const* td_stock_2 = nullptr;
+    stock const* td_stock_3 = nullptr;
 
-    int td_int_3 = 0;
+    int const* td_int_3 = nullptr;
 
-    registry.get_values("tse:td", td_bool_1);
-    registry.get_values("tse:td", td_bool_2, td_stock_2);
-    registry.get_values("tse:td", td_bool_3, td_stock_3, td_int_3);
+    bool* td_bool_1_2 = nullptr;
+    bool* td_bool_2_2 = nullptr;
+    bool* td_bool_3_2 = nullptr;
 
-    REQUIRE(td_bool_1 == bool_ref);
-    REQUIRE(td_bool_2 == bool_ref);
-    REQUIRE(td_bool_3 == bool_ref);
+    stock* td_stock_2_2 = nullptr;
+    stock* td_stock_3_2 = nullptr;
 
-    REQUIRE(td_int_3 == int_ref);
+    int* td_int_3_2 = nullptr;
 
-    REQUIRE_NOTHROW(registry.set_values("tse:td", bool_ref, int_modified_ref));
+    registry.cget("tse:td", td_bool_1);
+    registry.cget("tse:td", td_bool_2, td_stock_2);
+    registry.cget("tse:td", td_bool_3, td_stock_3, td_int_3);
 
-    bool td_bool_4 = false;
-    int td_int_4 = 0;
+    registry.get("tse:td", td_bool_1_2);
+    registry.get("tse:td", td_bool_2_2, td_stock_2_2);
+    registry.get("tse:td", td_bool_3_2, td_stock_3_2, td_int_3_2);
 
-    registry.get_values<bool, int>("tse:td", td_bool_4, td_int_4);
-    REQUIRE(td_bool_4 == bool_ref);
-    REQUIRE(td_int_4 == int_modified_ref);
+    REQUIRE(*td_bool_1 == bool_ref);
+    REQUIRE(*td_bool_2 == bool_ref);
+    REQUIRE(*td_bool_3 == bool_ref);
+
+    REQUIRE(*td_int_3 == int_ref);
+
+    REQUIRE(*td_bool_1_2 == bool_ref);
+    REQUIRE(*td_bool_2_2 == bool_ref);
+    REQUIRE(*td_bool_3_2 == bool_ref);
+
+    REQUIRE(*td_int_3_2 == int_ref);
+
+    REQUIRE_NOTHROW(registry.set("tse:td", int_modified_ref));
+    REQUIRE_NOTHROW(registry.set("tse:td", bool_ref, int_modified_ref));
+
+    bool const* td_bool_4 = nullptr;
+    int const* td_int_4 = nullptr;
+
+    bool* td_bool_4_2 = nullptr;
+    int* td_int_4_2 = nullptr;
+
+    registry.cget("tse:td", td_bool_4, td_int_4);
+
+    registry.get("tse:td", td_bool_4_2, td_int_4_2);
+
+    REQUIRE(*td_bool_4 == bool_ref);
+    REQUIRE(*td_int_4 == int_modified_ref);
+
+    REQUIRE(*td_bool_4_2 == bool_ref);
+    REQUIRE(*td_int_4_2 == int_modified_ref);
 
     SECTION("many throw when not found")
     {
         stock not_found_stock;
         bool not_found_bool = false;
-        REQUIRE_THROWS(registry.set_values("tse:not-found", not_found_stock, not_found_bool));
-        REQUIRE_THROWS(registry.set_values("tse:vab", true));
+        REQUIRE_THROWS(registry.set("tse:vab", not_found_bool));
+        REQUIRE_THROWS(registry.set("tse:not-found", not_found_stock, not_found_bool));
     }
 }
 
@@ -211,14 +275,35 @@ TEST_CASE("registry all", "[registry]")
     registry.enroll<stock>({{"tse:td", {}}, {"tse:rbc", {}}});
     registry.enroll<bool>({{"tse:td", bool_ref}});
 
-    const auto& s = registry.all<etf>();
-    const auto& s_2 = registry.all<stock>();
-    const auto& s_3 = registry.all<bool>();
-    const auto& s_4 = registry.all<int>();
+    std::vector<etf const*> s_1;
+    std::vector<stock const*> s_2;
+    std::vector<bool const*> s_3;
+    std::vector<int const*> s_4;
 
-    REQUIRE(s.size() == 1);
+    std::vector<etf*> s_1_2;
+    std::vector<stock*> s_2_2;
+    std::vector<bool*> s_3_2;
+    std::vector<int*> s_4_2;
+
+    registry.call(s_1);
+    registry.call(s_2);
+    registry.call(s_3);
+    registry.call(s_4);
+
+    registry.all(s_1_2);
+    registry.all(s_2_2);
+    registry.all(s_3_2);
+    registry.all(s_4_2);
+
+    REQUIRE(s_1.size() == 1);
     REQUIRE(s_2.size() == 2);
     REQUIRE(s_3.size() == 1);
-    REQUIRE(s_3[0] == bool_ref);
+    REQUIRE(*(s_3[0]) == bool_ref);
     REQUIRE(s_4.size() == 0);
+
+    REQUIRE(s_1_2.size() == 1);
+    REQUIRE(s_2_2.size() == 2);
+    REQUIRE(s_3_2.size() == 1);
+    REQUIRE(*(s_3_2[0]) == bool_ref);
+    REQUIRE(s_4_2.size() == 0);
 }

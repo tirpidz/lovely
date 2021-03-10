@@ -17,12 +17,10 @@ public:
 
     void simple_math(const std::string& key, const int increment)
     {
-        int value = 0;
+        int* value = nullptr;
         _model.get(key, value);
 
-        do_simple_math(value, increment);
-
-        _model.set(key, value);
+        do_simple_math(*value, increment);
     }
 
 protected:
