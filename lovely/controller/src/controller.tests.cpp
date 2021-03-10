@@ -34,10 +34,10 @@ TEST_CASE("controller initialize", "[controller]")
 
     controller.simple_math("tse:td", int_ref);
 
-    int int_value_modified = 0;
-    model.get("tse:td", int_value_modified);
+    int const* int_value_modified;
+    model.cget("tse:td", int_value_modified);
 
-    REQUIRE(int_value_modified == 2 * int_ref);
+    REQUIRE(*int_value_modified == 2 * int_ref);
 
     SECTION("throw when callback is null")
     {
