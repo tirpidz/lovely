@@ -1,8 +1,8 @@
-#include <lovely/controller/executors/simple.h>
+#include <lovely/controller/tests/executors/simple.h>
 #include <lovely/model/model.h>
 #include <lovely/model/registry.h>
-#include <lovely/model/symbol/etf.h>
-#include <lovely/model/symbol/stock.h>
+#include <lovely/model/tests/symbol/etf.h>
+#include <lovely/model/tests/symbol/stock.h>
 
 #include <catch2/catch.hpp>
 

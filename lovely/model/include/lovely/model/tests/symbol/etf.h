@@ -1,6 +1,6 @@
 #pragma once
 
-#include <lovely/model/symbol/symbol.h>
+#include <lovely/model/tests/symbol/symbol.h>
 
 namespace lovely {
 
