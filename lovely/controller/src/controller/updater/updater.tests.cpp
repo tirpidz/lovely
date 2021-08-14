@@ -1,7 +1,7 @@
 #include <lovely/controller/tests/updater/custom_updater.h>
-#include <lovely/controller/updater.h>
+#include <lovely/controller/updater/updater.h>
 #include <lovely/model/model.h>
-#include <lovely/model/registry.h>
+#include <lovely/model/registry/registry.h>
 #include <lovely/model/tests/model/custom_model.h>
 #include <lovely/model/tests/symbol/etf.h>
 #include <lovely/model/tests/symbol/stock.h>
@@ -10,7 +10,7 @@
 
 using namespace lovely;
 
-TEST_CASE("custom updater initialize", "[controller]")
+TEST_CASE("updater initialize", "[controller]")
 {
     const int int_ref = 42;
 

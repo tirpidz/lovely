@@ -5,7 +5,7 @@ namespace lovely {
 template <typename model, typename updater, typename... executor>
 class controller : public executor... {
 public:
-    controller(model& m, updater& u) : executor(m)..., _updater(u) {}
+    controller(model& m) : executor(m)..., _updater(m) {}
 
     controller() = delete;
     virtual ~controller() = default;
@@ -16,7 +16,7 @@ public:
     void update() { _updater.update(); }
 
 protected:
-    updater& _updater;
+    updater _updater;
 };
 
 }  // namespace lovely

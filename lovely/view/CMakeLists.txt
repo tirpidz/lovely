@@ -25,7 +25,7 @@ set(TESTS_SOURCE_FILES
 
 set(TARGET_TESTS_VIEW_NAME lovely_tests_view)
 
-add_library(${TARGET_TESTS_VIEW_NAME} ${SOURCE_FILES} ${HEADER_FILES})
+add_library(${TARGET_TESTS_VIEW_NAME} ${TESTS_SOURCE_FILES} ${TESTS_HEADER_FILES})
 target_include_directories(${TARGET_TESTS_VIEW_NAME} PUBLIC include)
 target_compile_features(${TARGET_TESTS_VIEW_NAME} PUBLIC cxx_std_17)
 install(TARGETS ${TARGET_TESTS_VIEW_NAME} DESTINATION lib)
@@ -34,7 +34,7 @@ set(VIEW_UNIT_TESTS view-unit-tests)
 
 set(SOURCES_VIEW_UNIT_TESTS
     src/view.main.tests.cpp
-    src/view.tests.cpp
+    src/view/view.tests.cpp
 )
 
 add_executable(${VIEW_UNIT_TESTS} ${SOURCES_VIEW_UNIT_TESTS})

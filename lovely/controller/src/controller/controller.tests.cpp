@@ -2,9 +2,9 @@
 #include <lovely/controller/tests/custom_controller.h>
 #include <lovely/controller/tests/executor/simple.h>
 #include <lovely/controller/tests/updater/custom_updater.h>
-#include <lovely/controller/updater.h>
+#include <lovely/controller/updater/updater.h>
 #include <lovely/model/model.h>
-#include <lovely/model/registry.h>
+#include <lovely/model/registry/registry.h>
 #include <lovely/model/tests/model/custom_model.h>
 #include <lovely/model/tests/symbol/etf.h>
 #include <lovely/model/tests/symbol/stock.h>
@@ -20,8 +20,7 @@ TEST_CASE("controller initialize", "[controller]")
     custom_model model;
     model.initialize();
 
-    custom_updater updater(model);
-    custom_controller controller(model, updater);
+    controller<custom_model, custom_updater, simple<custom_model>> controller(model);
 
     int const* int_value_modified = nullptr;
 

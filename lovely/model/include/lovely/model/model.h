@@ -1,7 +1,7 @@
 #pragma once
 
 #include <lovely/model/exceptions.h>
-#include <lovely/model/registry.h>
+#include <lovely/model/registry/registry.h>
 
 namespace lovely {
 

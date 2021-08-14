@@ -1,6 +1,6 @@
 #pragma once
 
-#include <lovely/controller/updater.h>
+#include <lovely/controller/updater/updater.h>
 #include <lovely/model/tests/model/custom_model.h>
 
 namespace lovely {

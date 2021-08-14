@@ -1,10 +1,9 @@
-#include <lovely/model/registry.h>
+#include <lovely/model/registry/registry.h>
 #include <lovely/model/tests/symbol/etf.h>
 #include <lovely/model/tests/symbol/stock.h>
 
 #include <array>
 #include <catch2/catch.hpp>
-#include <limits>
 #include <string>
 #include <vector>
 
