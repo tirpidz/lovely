@@ -22,6 +22,8 @@ set(CONTROLLER_UNIT_TESTS controller-unit-tests)
 set(SOURCES_CONTROLLER_UNIT_TESTS
     src/controller.main.tests.cpp
     src/controller.tests.cpp
+    src/executor/simple.tests.cpp
+    src/updater.tests.cpp
 )
 
 add_executable(${CONTROLLER_UNIT_TESTS} ${SOURCES_CONTROLLER_UNIT_TESTS})

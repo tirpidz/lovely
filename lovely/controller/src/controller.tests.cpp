@@ -12,32 +12,54 @@ using namespace lovely;
 
 TEST_CASE("controller initialize", "[controller]")
 {
-    // const bool bool_ref = true;
-    // const int int_ref = 42;
+    class custom_model : public model<stock, etf, bool, int> {
+    protected:
+        virtual void initialize_internal() override
+        {
+            enroll<stock>({{"tse:td", {}}, {"tse:rbc", {}}});
+            enroll<etf>({{"tse:vab", {}}});
+            enroll<bool>({{"tse:td", true}});
+            enroll<int>({{"tse:td", 42}});
+        }
+    };
 
-    // model<stock, etf, bool, int> model;
-    // model.initialize();
+    class custom_updater : public updater<custom_model> {
+    public:
+        custom_updater(custom_model& model) : updater<custom_model>(model) {}
 
-    // auto update_external_callback = [&](lovely::model<stock, etf, bool, int>& model) { (void)model; };
-    // auto update_derived_callback = [&](lovely::model<stock, etf, bool, int>& model) { (void)model; };
+    protected:
+        virtual void update_external_internal() override
+        {
+            int* int_value = nullptr;
+            _model.get("tse:td", int_value);
+            *int_value += 1;
+        }
 
-    // // updater<stock, etf, bool, int> updater(model, update_external_callback, update_derived_callback);
+        virtual void update_derived_internal() override
+        {
+            int* int_value = nullptr;
+            _model.get("tse:td", int_value);
+            *int_value += 10;
+        }
+    };
 
-    // controller<typeof(model), typeof(updater), simple<typeof(model)>> controller(model, updater);
+    const int int_ref = 42;
 
-    // controller.simple_math("tse:td", int_ref);
+    custom_model model;
+    model.initialize();
 
-    // int const* int_value_modified;
-    // model.cget("tse:td", int_value_modified);
+    custom_updater updater(model);
+    controller<custom_model, custom_updater, simple<custom_model>> controller(model, updater);
 
-    // REQUIRE(*int_value_modified == 2 * int_ref);
+    int const* int_value_modified = nullptr;
 
-    // SECTION("throw when callback is null")
-    // {
-    //     REQUIRE_THROWS(
-    //         [&]() { lovely::updater<stock, etf, bool, int> updater(model, nullptr, update_derived_callback); }());
-    //     REQUIRE_THROWS(
-    //         [&]() { lovely::updater<stock, etf, bool, int> updater(model, update_external_callback, nullptr); }());
-    //     REQUIRE_THROWS([&]() { lovely::updater<stock, etf, bool, int> updater(model, nullptr, nullptr); }());
-    // }
+    controller.update();
+    model.cget("tse:td", int_value_modified);
+
+    REQUIRE(*int_value_modified == int_ref + 10 + 1);
+
+    controller.simple_math("tse:td", int_ref);
+    model.cget("tse:td", int_value_modified);
+
+    REQUIRE(*int_value_modified == int_ref + int_ref + 10 + 1);
 }

@@ -3,31 +3,15 @@
 #include <lovely/controller/exceptions.h>
 #include <lovely/model/model.h>
 
-#include <cstdint>
-#include <functional>
-
 namespace lovely {
 
-template <typename... types>
-class updater final {
+template <typename model>
+class updater {
 public:
-    updater(model<types...>& model, std::function<void(lovely::model<types...>&)> update_external_callback,
-            std::function<void(lovely::model<types...>&)> update_derived_callback)
-        : _model(model)
-        , _update_external_callback(update_external_callback)
-        , _update_derived_callback(update_derived_callback)
-    {
-        if (_update_external_callback == nullptr) {
-            throw exception::controller::callback_cannot_be_null();
-        }
-
-        if (_update_derived_callback == nullptr) {
-            throw exception::controller::callback_cannot_be_null();
-        }
-    }
+    updater(model& m) : _model(m) {}
 
     updater() = delete;
-    ~updater() = default;
+    virtual ~updater() = default;
 
     updater(const updater& other) = delete;
     updater& operator=(const updater& other) = delete;
@@ -39,13 +23,13 @@ public:
     }
 
 protected:
-    void update_external() { _update_external_callback(_model); }
-    void update_derived() { _update_derived_callback(_model); }
+    void update_external() { update_external_internal(); }
+    void update_derived() { update_derived_internal(); }
 
-    model<types...>& _model;
+    virtual void update_external_internal() {}
+    virtual void update_derived_internal() {}
 
-    std::function<void(model<types...>&)> _update_external_callback;
-    std::function<void(model<types...>&)> _update_derived_callback;
+    model& _model;
 };
 
 }  // namespace lovely
