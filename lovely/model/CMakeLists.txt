@@ -1,5 +1,6 @@
 set(HEADER_FILES
     include/lovely/model/model.h
+    include/lovely/model/registry/listing.h
     include/lovely/model/registry/registry.h
 )
 
@@ -43,6 +44,7 @@ set(SOURCES_MODEL_UNIT_TESTS
     src/model/tests/symbol/etf.tests.cpp
     src/model/tests/symbol/stock.tests.cpp
     src/model/tests/symbol/symbol.tests.cpp
+    src/model/registry/listing.tests.cpp
     src/model/registry/registry.tests.cpp
 )
 
