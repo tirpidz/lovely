@@ -1,9 +1,8 @@
 #include <lovely/model/model.h>
-#include <lovely/model/symbol/etf.h>
-#include <lovely/model/symbol/stock.h>
+#include <lovely/model/tests/symbol/etf.h>
+#include <lovely/model/tests/symbol/stock.h>
 
 #include <catch2/catch.hpp>
-#include <functional>
 
 using namespace lovely;
 

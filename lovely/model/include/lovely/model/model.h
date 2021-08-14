@@ -3,8 +3,6 @@
 #include <lovely/model/exceptions.h>
 #include <lovely/model/registry.h>
 
-#include <functional>
-
 namespace lovely {
 
 template <typename... types>
