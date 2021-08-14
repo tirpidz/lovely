@@ -1,6 +1,6 @@
 set(HEADER_FILES
     include/lovely/model/model.h
-    include/lovely/model/registry.h
+    include/lovely/model/registry/registry.h
 )
 
 set(SOURCE_FILES
@@ -38,8 +38,12 @@ install(TARGETS ${TARGET_TESTS_MODEL_NAME} DESTINATION lib)
 
 set(SOURCES_MODEL_UNIT_TESTS
     src/model.main.tests.cpp
-    src/model.tests.cpp
-    src/registry.tests.cpp
+    src/model/model.tests.cpp
+    src/model/tests/model/custom_model.tests.cpp
+    src/model/tests/symbol/etf.tests.cpp
+    src/model/tests/symbol/stock.tests.cpp
+    src/model/tests/symbol/symbol.tests.cpp
+    src/model/registry/registry.tests.cpp
 )
 
 add_executable(${MODEL_UNIT_TESTS} ${SOURCES_MODEL_UNIT_TESTS})

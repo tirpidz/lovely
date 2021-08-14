@@ -9,10 +9,7 @@ namespace lovely {
 
 class custom_controller : public controller<custom_model, custom_updater, simple<custom_model>> {
 public:
-    custom_controller(custom_model& m, custom_updater& u)
-        : controller<custom_model, custom_updater, simple<custom_model>>(m, u)
-    {
-    }
+    custom_controller(custom_model& m) : controller(m) {}
 
     custom_controller() = delete;
     virtual ~custom_controller() = default;
