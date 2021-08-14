@@ -17,6 +17,7 @@ install(TARGETS ${TARGET_MODEL_NAME} DESTINATION lib)
 set(MODEL_UNIT_TESTS model-unit-tests)
 
 set(TESTS_HEADER_FILES
+    include/lovely/model/tests/model/custom_model.h
     include/lovely/model/tests/symbol/etf.h
     include/lovely/model/tests/symbol/stock.h
     include/lovely/model/tests/symbol/symbol.h
@@ -31,6 +32,7 @@ set(TARGET_TESTS_MODEL_NAME lovely_tests_model)
 add_library(${TARGET_TESTS_MODEL_NAME} ${TESTS_SOURCE_FILES} ${TESTS_HEADER_FILES})
 target_include_directories(${TARGET_TESTS_MODEL_NAME} PUBLIC include)
 target_compile_features(${TARGET_TESTS_MODEL_NAME} PUBLIC cxx_std_17)
+target_link_libraries(${TARGET_TESTS_MODEL_NAME} PRIVATE ${TARGET_MODEL_NAME})
 install(TARGETS ${TARGET_TESTS_MODEL_NAME} DESTINATION lib)
 
 

@@ -4,18 +4,28 @@
 
 namespace lovely {
 
-class view final {
+template <typename model, typename controller>
+class view {
 public:
-    view();
-    ~view() = default;
+    view(const model& m, controller& c) : _model(m), _controller(c) {}
+    view() = delete;
+    virtual ~view() = default;
 
     view(const view& other) = delete;
     view& operator=(const view& other) = delete;
 
-    int64_t number() const { return _number; }
+    void update()
+    {
+        _controller.update();
+        update_internal();
+    }
+
+protected:
+    virtual void update_internal();
 
 private:
-    int64_t _number;
+    const model& _model;
+    controller _controller;
 };
 
 }  // namespace lovely

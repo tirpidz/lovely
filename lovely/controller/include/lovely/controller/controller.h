@@ -2,10 +2,10 @@
 
 namespace lovely {
 
-template <typename model, typename updater, typename... executors>
-class controller final : public executors... {
+template <typename model, typename updater, typename... executor>
+class controller : public executor... {
 public:
-    controller(model& m, updater& u) : executors(m)..., _updater(u) {}
+    controller(model& m, updater& u) : executor(m)..., _updater(u) {}
 
     controller() = delete;
     virtual ~controller() = default;
