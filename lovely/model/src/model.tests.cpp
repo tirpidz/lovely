@@ -12,17 +12,32 @@ TEST_CASE("model initialize", "[model]")
     const bool bool_ref = true;
     const int int_ref = 42;
 
-    auto initialization_callback = [&](registry<stock, etf, bool, int>& data) {
-        data.enroll<stock>({{"tse:td", {}}, {"tse:rbc", {}}});
-        data.enroll<etf>({{"tse:vab", {}}});
-        data.enroll<bool>({{"tse:td", bool_ref}});
-        data.enroll<int>({{"tse:td", int_ref}});
-    };
-
-    model<stock, etf, bool, int> model(initialization_callback);
+    model<stock, etf, bool, int> model;
     REQUIRE(!model.is_initialized());
     model.initialize();
     REQUIRE(model.is_initialized());
+
+    SECTION("throw when trying to initialize a second time") { REQUIRE_THROWS(model.initialize()); }
+}
+
+TEST_CASE("custom model initialize", "[model]")
+{
+    class custom_model : public model<stock, etf, bool, int> {
+    protected:
+        virtual void initialize_internal() override
+        {
+            enroll<stock>({{"tse:td", {}}, {"tse:rbc", {}}});
+            enroll<etf>({{"tse:vab", {}}});
+            enroll<bool>({{"tse:td", true}});
+            enroll<int>({{"tse:td", 42}});
+        }
+    };
+
+    const bool bool_ref = true;
+    const int int_ref = 42;
+
+    custom_model model;
+    model.initialize();
 
     bool const* bool_value = nullptr;
     int* int_value = nullptr;
@@ -32,10 +47,4 @@ TEST_CASE("model initialize", "[model]")
 
     REQUIRE(*bool_value == bool_ref);
     REQUIRE(*int_value == int_ref);
-
-    SECTION("throw when callback is null")
-    {
-        REQUIRE_THROWS([&]() { lovely::model<stock, etf, bool, int> model(nullptr); }());
-    }
-    SECTION("throw when trying to initialize a second time") { REQUIRE_THROWS(model.initialize()); }
 }
