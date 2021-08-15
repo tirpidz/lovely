@@ -33,7 +33,7 @@ protected:
     template <typename T, typename... Ts>
     constexpr bool check()
     {
-        return std::disjunction_v<std::is_base_of<T, Ts>...>;
+        return std::conjunction_v<std::is_base_of<T, Ts>...>;
     }
 
     updater _updater;
