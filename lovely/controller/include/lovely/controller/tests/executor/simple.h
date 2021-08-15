@@ -1,6 +1,5 @@
 #pragma once
 
-#include <lovely/controller/exceptions.h>
 #include <lovely/controller/executor/executor.h>
 
 #include <string>
