@@ -17,7 +17,7 @@ target_link_libraries(${TARGET_VIEW_NAME} PUBLIC lovely_model)
 install(TARGETS ${TARGET_VIEW_NAME} DESTINATION lib)
 
 set(TESTS_HEADER_FILES
-    include/lovely/view/tests/view/stock_view.h
+    include/lovely/view/tests/view/custom_view.h
 )
 
 set(TESTS_SOURCE_FILES
@@ -29,6 +29,8 @@ set(TARGET_TESTS_VIEW_NAME lovely_tests_view)
 add_library(${TARGET_TESTS_VIEW_NAME} ${TESTS_SOURCE_FILES} ${TESTS_HEADER_FILES})
 target_include_directories(${TARGET_TESTS_VIEW_NAME} PUBLIC include)
 target_compile_features(${TARGET_TESTS_VIEW_NAME} PUBLIC cxx_std_17)
+target_link_libraries(${TARGET_VIEW_NAME} PUBLIC lovely_tests_model)
+target_link_libraries(${TARGET_VIEW_NAME} PUBLIC lovely_tests_controller)
 install(TARGETS ${TARGET_TESTS_VIEW_NAME} DESTINATION lib)
 
 set(VIEW_UNIT_TESTS view-unit-tests)
@@ -36,6 +38,7 @@ set(VIEW_UNIT_TESTS view-unit-tests)
 set(SOURCES_VIEW_UNIT_TESTS
     src/view.main.tests.cpp
     src/view/view.tests.cpp
+    src/view/tests/view/custom_view.tests.cpp
 )
 
 add_executable(${VIEW_UNIT_TESTS} ${SOURCES_VIEW_UNIT_TESTS})
