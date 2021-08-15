@@ -10,7 +10,7 @@ namespace lovely {
 
 class custom_view final : public view<custom_model> {
 public:
-    custom_view(custom_model& m, simple<custom_model>& simple) : view<custom_model>(m), _simple(simple) {}
+    custom_view(custom_model& m, simple<custom_model>& s) : view<custom_model>(m), _simple(s) {}
     virtual ~custom_view() = default;
 
 protected:
