@@ -53,7 +53,7 @@ TEST_CASE("controller throw when executors templates are not of executor base cl
     };
 
     try {
-        controller<custom_model, custom_updater, fake_executor> controller(model);
+        controller<custom_model, custom_updater, fake_executor, simple<custom_model>> controller(model);
     }
     catch (...) {
         has_been_thrown = true;
