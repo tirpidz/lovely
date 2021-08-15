@@ -1,4 +1,3 @@
-#include <lovely/model/model.h>
 #include <lovely/model/tests/model/custom_model.h>
 #include <lovely/view/view.h>
 
