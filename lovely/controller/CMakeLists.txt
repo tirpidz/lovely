@@ -18,6 +18,7 @@ target_link_libraries(${TARGET_CONTROLLER_NAME} PUBLIC lovely_model)
 install(TARGETS ${TARGET_CONTROLLER_NAME} DESTINATION lib)
 
 set(TESTS_HEADER_FILES
+    include/lovely/controller/tests/custom_controller.h
     include/lovely/controller/tests/executor/simple.h
     include/lovely/controller/tests/updater/custom_updater.h
 )
@@ -32,6 +33,7 @@ add_library(${TARGET_TESTS_CONTROLLER_NAME} ${TESTS_SOURCE_FILES} ${TESTS_HEADER
 target_include_directories(${TARGET_TESTS_CONTROLLER_NAME} PUBLIC include)
 target_compile_features(${TARGET_TESTS_CONTROLLER_NAME} PUBLIC cxx_std_17)
 target_link_libraries(${TARGET_TESTS_CONTROLLER_NAME} PRIVATE lovely_tests_model)
+target_link_libraries(${TARGET_TESTS_CONTROLLER_NAME} PUBLIC lovely_controller)
 target_link_libraries(${TARGET_TESTS_CONTROLLER_NAME} PRIVATE ${TARGET_CONTROLLER_NAME})
 install(TARGETS ${TARGET_TESTS_CONTROLLER_NAME} DESTINATION lib)
 
