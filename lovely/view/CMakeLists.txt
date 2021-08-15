@@ -1,5 +1,5 @@
 set(HEADER_FILES
-    include/lovely/view/exception.h
+    include/lovely/view/exceptions.h
     include/lovely/view/view.h
 )
 
