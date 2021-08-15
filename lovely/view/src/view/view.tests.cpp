@@ -11,5 +11,22 @@ using namespace lovely;
 TEST_CASE("view initialize", "[view]")
 {
     custom_model model;
-    // custom_controller controller(model);
+    model.initialize();
+
+    view<custom_model, custom_controller> view(model);
+}
+
+TEST_CASE("view throw when model not initialized", "[controller]")
+{
+    custom_model model_not_initialized;
+    bool has_been_thrown = false;
+
+    try {
+        view<custom_model, custom_controller> view(model_not_initialized);
+    }
+    catch (...) {
+        has_been_thrown = true;
+    }
+
+    REQUIRE(has_been_thrown == true);
 }

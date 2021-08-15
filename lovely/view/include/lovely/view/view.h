@@ -1,11 +1,18 @@
 #pragma once
 
+#include <lovely/view/exceptions.h>
+
 namespace lovely {
 
 template <typename model, typename controller>
 class view {
 public:
-    view(const model& m, controller& c) : _model(m), _controller(c) {}
+    view(model& m) : _model(m), _controller(m)
+    {
+        if (!m.is_initialized()) {
+            throw exception::view::model_not_initialized();
+        }
+    }
     view() = delete;
     virtual ~view() = default;
 
