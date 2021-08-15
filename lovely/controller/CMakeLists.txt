@@ -1,5 +1,6 @@
 set(HEADER_FILES
     include/lovely/controller/controller.h
+    include/lovely/controller/executor/executor.h
     include/lovely/controller/exceptions.h
     include/lovely/controller/updater/updater.h
 )
@@ -39,6 +40,7 @@ set(CONTROLLER_UNIT_TESTS controller-unit-tests)
 set(SOURCES_CONTROLLER_UNIT_TESTS
     src/controller.main.tests.cpp
     src/controller/controller.tests.cpp
+    src/controller/executor/executor.tests.cpp
     src/controller/tests/custom_controller.tests.cpp
     src/controller/tests/updater/custom_updater.tests.cpp
     src/controller/tests/executor/simple.tests.cpp

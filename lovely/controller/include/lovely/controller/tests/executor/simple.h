@@ -1,33 +1,28 @@
 #pragma once
 
+#include <lovely/controller/exceptions.h>
+#include <lovely/controller/executor/executor.h>
+
 #include <string>
 
 namespace lovely {
 
 template <typename model>
-class simple {
+class simple : public executor<model> {
 public:
-    simple(model& m) : _model(m) {}
-
-    simple() = delete;
+    simple(model& m) : executor<model>(m) {}
     virtual ~simple() = default;
-
-    simple(const simple& other) = delete;
-    simple& operator=(const simple& other) = delete;
 
     void simple_math(const std::string& key, const int increment)
     {
         int* value = nullptr;
-        _model.get(key, value);
+        this->_model.get(key, value);
 
         do_simple_math(*value, increment);
     }
 
 protected:
     void do_simple_math(int& value, const int increment) { value += increment; }
-
-private:
-    model& _model;
 };
 
 }  // namespace lovely

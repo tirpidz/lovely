@@ -8,7 +8,12 @@ namespace lovely {
 template <typename model>
 class updater {
 public:
-    updater(model& m) : _model(m) {}
+    updater(model& m) : _model(m)
+    {
+        if (!m.is_initialized()) {
+            throw exception::controller::model_not_initialized();
+        }
+    }
 
     updater() = delete;
     virtual ~updater() = default;

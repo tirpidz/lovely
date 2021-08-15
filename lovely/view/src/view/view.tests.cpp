@@ -11,6 +11,5 @@ using namespace lovely;
 TEST_CASE("view initialize", "[view]")
 {
     custom_model model;
-    custom_controller controller(model);
-    
+    // custom_controller controller(model);
 }
