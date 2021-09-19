@@ -1,11 +1,8 @@
-set(HEADER_FILES
-    include/lovely/view/exceptions.h
-    include/lovely/view/view.h
-)
+file(GLOB_RECURSE HEADER_FILES LIST_DIRECTORIES false "*.h")
+list(FILTER HEADER_FILES EXCLUDE REGEX "tests")
 
-set(SOURCE_FILES
-    src/view.cpp
-)
+file(GLOB_RECURSE SOURCE_FILES LIST_DIRECTORIES false "*.cpp")
+list(FILTER SOURCE_FILES EXCLUDE REGEX "tests")
 
 set(TARGET_VIEW_NAME lovely_view)
 
@@ -15,13 +12,10 @@ target_compile_features(${TARGET_VIEW_NAME} PUBLIC cxx_std_17)
 target_link_libraries(${TARGET_VIEW_NAME} PUBLIC lovely_model)
 install(TARGETS ${TARGET_VIEW_NAME} DESTINATION lib)
 
-set(TESTS_HEADER_FILES
-    include/lovely/view/tests/view/custom_view.h
-)
+file(GLOB_RECURSE TESTS_HEADER_FILES LIST_DIRECTORIES false "*.h")
+list(FILTER TESTS_HEADER_FILES INCLUDE REGEX "tests")
 
-set(TESTS_SOURCE_FILES
-    src/tests_view.cpp
-)
+file(GLOB_RECURSE TESTS_SOURCE_FILES LIST_DIRECTORIES false "tests_*.cpp")
 
 set(TARGET_TESTS_VIEW_NAME lovely_tests_view)
 
@@ -35,11 +29,7 @@ install(TARGETS ${TARGET_TESTS_VIEW_NAME} DESTINATION lib)
 
 set(VIEW_UNIT_TESTS view-unit-tests)
 
-set(SOURCES_VIEW_UNIT_TESTS
-    src/view.main.tests.cpp
-    src/view/view.tests.cpp
-    src/view/tests/view/custom_view.tests.cpp
-)
+file(GLOB_RECURSE SOURCES_VIEW_UNIT_TESTS LIST_DIRECTORIES false "*tests.cpp")
 
 add_executable(${VIEW_UNIT_TESTS} ${SOURCES_VIEW_UNIT_TESTS})
 target_compile_features(${VIEW_UNIT_TESTS} PRIVATE cxx_std_17)

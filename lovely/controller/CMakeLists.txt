@@ -1,13 +1,8 @@
-set(HEADER_FILES
-    include/lovely/controller/controller.h
-    include/lovely/controller/executor/executor.h
-    include/lovely/controller/exceptions.h
-    include/lovely/controller/updater/updater.h
-)
+file(GLOB_RECURSE HEADER_FILES LIST_DIRECTORIES false "*.h")
+list(FILTER HEADER_FILES EXCLUDE REGEX "tests")
 
-set(SOURCE_FILES
-    src/controller.cpp
-)
+file(GLOB_RECURSE SOURCE_FILES LIST_DIRECTORIES false "*.cpp")
+list(FILTER SOURCE_FILES EXCLUDE REGEX "tests")
 
 set(TARGET_CONTROLLER_NAME lovely_controller)
 
@@ -17,15 +12,10 @@ target_compile_features(${TARGET_CONTROLLER_NAME} PUBLIC cxx_std_17)
 target_link_libraries(${TARGET_CONTROLLER_NAME} PUBLIC lovely_model)
 install(TARGETS ${TARGET_CONTROLLER_NAME} DESTINATION lib)
 
-set(TESTS_HEADER_FILES
-    include/lovely/controller/tests/custom_controller.h
-    include/lovely/controller/tests/executor/simple.h
-    include/lovely/controller/tests/updater/custom_updater.h
-)
+file(GLOB_RECURSE TESTS_HEADER_FILES LIST_DIRECTORIES false "*.h")
+list(FILTER TESTS_HEADER_FILES INCLUDE REGEX "tests")
 
-set(TESTS_SOURCE_FILES
-    src/tests_controller.cpp
-)
+file(GLOB_RECURSE TESTS_SOURCE_FILES LIST_DIRECTORIES false "tests_*.cpp")
 
 set(TARGET_TESTS_CONTROLLER_NAME lovely_tests_controller)
 
@@ -39,15 +29,7 @@ install(TARGETS ${TARGET_TESTS_CONTROLLER_NAME} DESTINATION lib)
 
 set(CONTROLLER_UNIT_TESTS controller-unit-tests)
 
-set(SOURCES_CONTROLLER_UNIT_TESTS
-    src/controller.main.tests.cpp
-    src/controller/controller.tests.cpp
-    src/controller/executor/executor.tests.cpp
-    src/controller/tests/custom_controller.tests.cpp
-    src/controller/tests/updater/custom_updater.tests.cpp
-    src/controller/tests/executor/simple.tests.cpp
-    src/controller/updater/updater.tests.cpp
-)
+file(GLOB_RECURSE SOURCES_CONTROLLER_UNIT_TESTS LIST_DIRECTORIES false "*tests.cpp")
 
 add_executable(${CONTROLLER_UNIT_TESTS} ${SOURCES_CONTROLLER_UNIT_TESTS})
 target_compile_features(${CONTROLLER_UNIT_TESTS} PRIVATE cxx_std_17)
