@@ -1,12 +1,8 @@
-set(HEADER_FILES
-    include/lovely/model/model.h
-    include/lovely/model/registry/listing.h
-    include/lovely/model/registry/registry.h
-)
+file(GLOB_RECURSE HEADER_FILES LIST_DIRECTORIES false "*.h")
+list(FILTER HEADER_FILES EXCLUDE REGEX "tests")
 
-set(SOURCE_FILES
-    src/model.cpp
-)
+file(GLOB_RECURSE SOURCE_FILES LIST_DIRECTORIES false "*.cpp")
+list(FILTER SOURCE_FILES EXCLUDE REGEX "tests")
 
 set(TARGET_MODEL_NAME lovely_model)
 
@@ -17,16 +13,10 @@ install(TARGETS ${TARGET_MODEL_NAME} DESTINATION lib)
 
 set(MODEL_UNIT_TESTS model-unit-tests)
 
-set(TESTS_HEADER_FILES
-    include/lovely/model/tests/model/custom_model.h
-    include/lovely/model/tests/symbol/etf.h
-    include/lovely/model/tests/symbol/stock.h
-    include/lovely/model/tests/symbol/symbol.h
-)
+file(GLOB_RECURSE TESTS_HEADER_FILES LIST_DIRECTORIES false "*.h")
+list(FILTER TESTS_HEADER_FILES INCLUDE REGEX "tests")
 
-set(TESTS_SOURCE_FILES
-    src/tests_model.cpp
-)
+file(GLOB_RECURSE TESTS_SOURCE_FILES LIST_DIRECTORIES false "tests_*.cpp")
 
 set(TARGET_TESTS_MODEL_NAME lovely_tests_model)
 
@@ -36,17 +26,7 @@ target_compile_features(${TARGET_TESTS_MODEL_NAME} PUBLIC cxx_std_17)
 target_link_libraries(${TARGET_TESTS_MODEL_NAME} PRIVATE ${TARGET_MODEL_NAME})
 install(TARGETS ${TARGET_TESTS_MODEL_NAME} DESTINATION lib)
 
-
-set(SOURCES_MODEL_UNIT_TESTS
-    src/model.main.tests.cpp
-    src/model/model.tests.cpp
-    src/model/tests/model/custom_model.tests.cpp
-    src/model/tests/symbol/etf.tests.cpp
-    src/model/tests/symbol/stock.tests.cpp
-    src/model/tests/symbol/symbol.tests.cpp
-    src/model/registry/listing.tests.cpp
-    src/model/registry/registry.tests.cpp
-)
+file(GLOB_RECURSE SOURCES_MODEL_UNIT_TESTS LIST_DIRECTORIES false "*tests.cpp")
 
 add_executable(${MODEL_UNIT_TESTS} ${SOURCES_MODEL_UNIT_TESTS})
 target_compile_features(${MODEL_UNIT_TESTS} PRIVATE cxx_std_17)
