@@ -2,9 +2,7 @@
 
 #include <stdexcept>
 
-namespace lovely {
-namespace exception {
-namespace model {
+namespace lovely::exception::model {
 
 class key_not_found final : public std::exception {
     virtual const char* what() const throw() { return "key is not found"; }
@@ -22,6 +20,4 @@ class already_has_been_initialized final : public std::exception {
     virtual const char* what() const throw() { return "already has been initialized"; }
 };
 
-}  // namespace model
-}  // namespace exception
-}  // namespace lovely
+}  // namespace lovely::exception::model

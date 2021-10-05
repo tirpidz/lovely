@@ -2,14 +2,10 @@
 
 #include <stdexcept>
 
-namespace lovely {
-namespace exception {
-namespace view {
+namespace lovely::exception::view {
 
 class model_not_initialized final : public std::exception {
     virtual const char* what() const throw() { return "model not initialized"; }
 };
 
-}  // namespace view
-}  // namespace exception
-}  // namespace lovely
+}  // namespace lovely::exception::view
