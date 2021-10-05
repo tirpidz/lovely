@@ -30,4 +30,5 @@ protected:
         *int_value += 10;
     }
 };
+
 }  // namespace lovely
