@@ -1,13 +1,15 @@
 #pragma once
 
+#include <string>
+
 // clang-format off
 namespace lovely {
-const char* LovelyName = "@PROJECT_NAME@";
+const std::string LovelyName = "@PROJECT_NAME@";
 const char* LovelyVersion = "@PROJECT_VERSION@";
-int LovelyMajorVersion = @PROJECT_VERSION_MAJOR@;
-int LovelyMinorVersion = @PROJECT_VERSION_MINOR@;
-int LovelyPatchVersion = @PROJECT_VERSION_PATCH@;
-const char* LovelyBuildTimestamp = "@LOVELY_BUILD_TIMESTAMP@";
-const char* LovelyCommit = "@LOVELY_COMMIT_VERSION@";
+const int LovelyMajorVersion = @PROJECT_VERSION_MAJOR@;
+const int LovelyMinorVersion = @PROJECT_VERSION_MINOR@;
+const int LovelyPatchVersion = @PROJECT_VERSION_PATCH@;
+const std::string LovelyBuildTimestamp = "@LOVELY_BUILD_TIMESTAMP@";
+const std::string LovelyCommit = "@LOVELY_COMMIT_VERSION@";
 }
 // clang-format on
